@@ -4,7 +4,7 @@
 
 # Site
 title: Kate's Blog
-subtitle: ''
+subtitle: 'subtitle'
 description: 'Work Lift Balance'
 keywords:
 author: Kate Cheng
@@ -99,8 +99,8 @@ ignore:
 ## Themes: https://hexo.io/themes/
 #theme: landscape
 #theme: Academia
-#theme: next
-theme: webstack
+theme: next
+#theme: webstack
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
