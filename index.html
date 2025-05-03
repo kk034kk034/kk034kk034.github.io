@@ -125,18 +125,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -161,6 +161,105 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/03/Hello-Backend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/03/Hello-Backend/" class="post-title-link" itemprop="url">Hello, Backend</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2025-05-03 18:06:12 / 修改時間：23:09:05" itemprop="dateCreated datePublished" datetime="2025-05-03T18:06:12+08:00">2025-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/backend/" itemprop="url" rel="index"><span itemprop="name">backend</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="使用-Fastify、Sequelize-和-JWT-實現-RBAC-權限管理"><a href="#使用-Fastify、Sequelize-和-JWT-實現-RBAC-權限管理" class="headerlink" title="使用 Fastify、Sequelize 和 JWT 實現 RBAC 權限管理"></a>使用 Fastify、Sequelize 和 JWT 實現 RBAC 權限管理</h1><p>在這篇文章中，我將分享如何使用 Fastify、Sequelize 和 JWT 搭建一個後端架構，並且通過 RBAC（基於角色的訪問控制） 來管理用戶的訪問權限。這些技術的組合讓我們能夠快速且安全地處理用戶身份認證與角色管理，並確保 API 的安全性。</p>
+<h1 id="為何選擇這些技術？"><a href="#為何選擇這些技術？" class="headerlink" title="為何選擇這些技術？"></a>為何選擇這些技術？</h1><ul>
+<li><p>Fastify：這是一個高效且易於擴展的 Node.js 框架，提供了強大的性能和極為簡單的 API 設計，能夠輕鬆應對高並發的請求。</p>
+</li>
+<li><p>Sequelize：作為一個強大的 ORM 工具，Sequelize 可以簡化與資料庫的交互，並且支持多種關聯型資料庫，適合用來處理用戶資料和角色資料。</p>
+</li>
+<li><p>JWT：JWT 是一種輕量級的身份驗證機制，可以在不同服務之間安全地傳遞用戶的身份信息，並且能夠實現無狀態的認證系統。</p>
+</li>
+</ul>
+<h1 id="如何實現-RBAC（基於角色的訪問控制）"><a href="#如何實現-RBAC（基於角色的訪問控制）" class="headerlink" title="如何實現 RBAC（基於角色的訪問控制）"></a>如何實現 RBAC（基於角色的訪問控制）</h1><ol>
+<li>設定資料模型<br>首先，我們需要設計 User 和 Role 模型，並使用 Sequelize 來管理這些資料。每個用戶都會被分配一個角色，角色則定義了用戶可以訪問的資源。</li>
+<li>設定角色和權限<br>我們使用 AccessControl 库來設定每個角色可以執行的操作。例如，groupViewer 角色只能讀取資料，而 groupManager 則擁有更多的操作權限。</li>
+<li>中間件：基於角色的授權<br>為了保證每個用戶只能訪問他們被授予權限的資源，我們在 Fastify 中創建了一個名為 authorize 的中間件，來進行每次請求的授權檢查。</li>
+<li>設定 JWT 認證<br>用戶登錄後，系統會發送一個 JWT 令牌，這個令牌會包含用戶的角色信息。在後續的 API 請求中，我們會驗證 JWT，並根據角色來授權。</li>
+</ol>
+<h1 id="使用-JWT-和-RBAC-進行授權操作"><a href="#使用-JWT-和-RBAC-進行授權操作" class="headerlink" title="使用 JWT 和 RBAC 進行授權操作"></a>使用 JWT 和 RBAC 進行授權操作</h1><p>一旦用戶成功登錄並獲得 JWT，後端可以根據用戶角色來授權操作。例如，讓 groupManager 角色的用戶將某個用戶分配到某個組織並賦予相應的角色。</p>
+<p>分配用戶到某個組織並賦予角色：<br>在這個 API 中，我們會驗證用戶的角色，然後根據角色授予其相應的權限。假設我們要實現將用戶分配到某個組織並賦予角色的功能，這樣的 API 需要確保只有 groupManager 和 groupAdmin 角色能夠進行此操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">fastify.<span class="title function_">post</span>(<span class="string">&#x27;/assign-user-role&#x27;</span>, &#123; <span class="attr">preValidation</span>: [fastify.<span class="title function_">authorize</span>(<span class="string">&#x27;createAny&#x27;</span>, <span class="string">&#x27;userRole&#x27;</span>)] &#125;, <span class="title function_">async</span> (request, reply) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; userId, organizationId, roleId &#125; = request.<span class="property">body</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 確認用戶是否已經存在</span></span><br><span class="line">  <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">findByPk</span>(userId);</span><br><span class="line">  <span class="keyword">if</span> (!user) &#123;</span><br><span class="line">    <span class="keyword">return</span> reply.<span class="title function_">code</span>(<span class="number">404</span>).<span class="title function_">send</span>(&#123; <span class="attr">error</span>: <span class="string">&#x27;User not found&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 分配角色</span></span><br><span class="line">  <span class="keyword">const</span> userRole = <span class="keyword">await</span> <span class="title class_">UserRole</span>.<span class="title function_">create</span>(&#123;</span><br><span class="line">    <span class="attr">user_id</span>: userId,</span><br><span class="line">    <span class="attr">organization_id</span>: organizationId,</span><br><span class="line">    <span class="attr">role_id</span>: roleId</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> reply.<span class="title function_">code</span>(<span class="number">200</span>).<span class="title function_">send</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;User role assigned successfully&#x27;</span>, userRole &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h1><p>這篇文章介紹了如何使用 Fastify、Sequelize 和 JWT 實現一個帶有 RBAC（基於角色的訪問控制）的後端架構。通過簡單的程式範例，我們展示了如何設定角色和權限，並且使用 JWT 來進行用戶身份驗證和授權操作。這個架構簡單且高效，適合用於需要角色管理和精細化權限控制的應用。</p>
+<p>如果你有興趣查看具體的程式碼實現，可以前往我的 GitHub 相關專案：<a target="_blank" rel="noopener" href="https://github.com/kk034kk034/management-system">https://github.com/kk034kk034/management-system</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -200,7 +299,7 @@
       <span class="post-meta-item-text">發表於</span>
       
 
-      <time title="創建時間：2025-02-23 16:21:14 / 修改時間：17:27:06" itemprop="dateCreated datePublished" datetime="2025-02-23T16:21:14+08:00">2025-02-23</time>
+      <time title="創建時間：2025-02-23 16:21:14 / 修改時間：17:37:10" itemprop="dateCreated datePublished" datetime="2025-02-23T16:21:14+08:00">2025-02-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -303,9 +402,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
-      
 
-      <time title="創建時間：2024-11-24 00:04:11 / 修改時間：00:13:43" itemprop="dateCreated datePublished" datetime="2024-11-24T00:04:11+08:00">2024-11-24</time>
+      <time title="創建時間：2024-11-24 00:04:11" itemprop="dateCreated datePublished" datetime="2024-11-24T00:04:11+08:00">2024-11-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-02-23 17:37:10" itemprop="dateModified" datetime="2025-02-23T17:37:10+08:00">2025-02-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -474,9 +579,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
-      
 
-      <time title="創建時間：2024-11-23 23:57:24 / 修改時間：23:58:55" itemprop="dateCreated datePublished" datetime="2024-11-23T23:57:24+08:00">2024-11-23</time>
+      <time title="創建時間：2024-11-23 23:57:24" itemprop="dateCreated datePublished" datetime="2024-11-23T23:57:24+08:00">2024-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-02-23 17:37:10" itemprop="dateModified" datetime="2025-02-23T17:37:10+08:00">2025-02-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -653,9 +764,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
-      
 
-      <time title="創建時間：2024-10-13 17:20:33 / 修改時間：20:35:55" itemprop="dateCreated datePublished" datetime="2024-10-13T17:20:33+08:00">2024-10-13</time>
+      <time title="創建時間：2024-10-13 17:20:33" itemprop="dateCreated datePublished" datetime="2024-10-13T17:20:33+08:00">2024-10-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-02-23 17:37:10" itemprop="dateModified" datetime="2025-02-23T17:37:10+08:00">2025-02-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -755,9 +872,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">發表於</span>
-      
 
-      <time title="創建時間：2024-07-25 11:31:52 / 修改時間：12:55:58" itemprop="dateCreated datePublished" datetime="2024-07-25T11:31:52+08:00">2024-07-25</time>
+      <time title="創建時間：2024-07-25 11:31:52" itemprop="dateCreated datePublished" datetime="2024-07-25T11:31:52+08:00">2024-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-02-23 17:37:10" itemprop="dateModified" datetime="2025-02-23T17:37:10+08:00">2025-02-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
