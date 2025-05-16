@@ -125,7 +125,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -136,7 +136,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -161,6 +161,143 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/17/Hello-My-API-Validation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/17/Hello-My-API-Validation/" class="post-title-link" itemprop="url">Hello, My API Validation</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2025-05-17 01:50:36 / 修改時間：01:51:05" itemprop="dateCreated datePublished" datetime="2025-05-17T01:50:36+08:00">2025-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/backend/" itemprop="url" rel="index"><span itemprop="name">backend</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="API-是最後防線，後端驗證不是加分項"><a href="#API-是最後防線，後端驗證不是加分項" class="headerlink" title="API 是最後防線，後端驗證不是加分項"></a>API 是最後防線，後端驗證不是加分項</h1><blockquote>
+<p>曾經我在 PR 裡加入了 MAC Address 與 Serial Number 的格式驗證，卻被視為「應該交由前端處理」而被移除。但後端驗證從來不是錦上添花，而是守住系統邏輯與安全底線的責任。</p>
+</blockquote>
+<p>在前後端分離的開發架構中，前端確實適合處理表單提示與使用者互動，但<strong>資料是否可信、格式是否正確，最終仍需由後端把關</strong>。這不只是風格問題，而是攸關資料正確性與系統安全的底線。</p>
+<h2 id="為什麼不能只靠前端驗證？"><a href="#為什麼不能只靠前端驗證？" class="headerlink" title="為什麼不能只靠前端驗證？"></a>為什麼不能只靠前端驗證？</h2><ul>
+<li><strong>攻擊者可繞過前端</strong>，直接對 API 發送請求，不受前端約束。</li>
+<li><strong>前端驗證容易遺漏</strong>，稍有改版就可能忘記檢查邊界狀況。</li>
+<li><strong>資料庫的品質與安全性</strong>，只能靠後端確保。</li>
+</ul>
+<p>不論你多信任使用者或自己的 UI，一旦 API 對外開放，所有輸入都應視為不可信，直到經過後端驗證為止。</p>
+<h2 id="常見卻易忽略的驗證需求"><a href="#常見卻易忽略的驗證需求" class="headerlink" title="常見卻易忽略的驗證需求"></a>常見卻易忽略的驗證需求</h2><table>
+<thead>
+<tr>
+<th>欄位類型</th>
+<th>常見問題</th>
+<th>建議處理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MAC Address</td>
+<td>大小寫混用、缺冒號、格式不符</td>
+<td>正規化格式、統一轉小寫</td>
+</tr>
+<tr>
+<td>Serial Number</td>
+<td>空白、特殊符號、長度不一</td>
+<td>去除多餘空白、限制長度與字元集</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>格式錯誤、大小寫比對錯誤</td>
+<td>標準格式驗證、轉小寫比對</td>
+</tr>
+<tr>
+<td>Phone Number</td>
+<td>國碼遺漏、格式不統一</td>
+<td>統一格式、清理非數字字元</td>
+</tr>
+<tr>
+<td>自由輸入文字</td>
+<td>可注入 <code>&lt;script&gt;</code> 等惡意內容</td>
+<td>過濾 HTML 標籤與特殊字元</td>
+</tr>
+<tr>
+<td>JSON 結構欄位</td>
+<td>欄位未定義、型別錯誤</td>
+<td>僅允許白名單欄位、進行深層驗證</td>
+</tr>
+<tr>
+<td>可變長欄位</td>
+<td>無長度限制、可被用來進行 DoS 攻擊</td>
+<td>設定合理最大長度</td>
+</tr>
+</tbody></table>
+<p>後端若不進行上述驗證，可能會導致資料一致性問題、系統崩潰、甚至資安事件。</p>
+<h2 id="格式驗證是後端的基本責任"><a href="#格式驗證是後端的基本責任" class="headerlink" title="格式驗證是後端的基本責任"></a>格式驗證是後端的基本責任</h2><p>有些人認為「後端只要處理業務邏輯，格式交給前端就好」，但這種分工方式忽略了一個事實：<strong>API 是唯一直接接觸資料庫的接口，也是攻擊者的主要進入點</strong>。</p>
+<p>後端若不主動驗證與保護，資料庫很快就會被寫滿錯誤、污染甚至惡意資料。屆時處理成本會比一開始做好驗證高上數倍。</p>
+<h2 id="結語：驗證不是「多做」，而是該做"><a href="#結語：驗證不是「多做」，而是該做" class="headerlink" title="結語：驗證不是「多做」，而是該做"></a>結語：驗證不是「多做」，而是該做</h2><p>後端驗證不是在跟前端搶工作，也不是完美主義者的堅持，而是為了讓系統穩定、安全、可維護。</p>
+<p>請不要再說「這應該交給前端處理」了。格式驗證、大小寫正規化、欄位清洗，<strong>本來就是後端應做的基本工事</strong>。既然 API 是最後一道防線，就該由後端守住，而不是放行。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
