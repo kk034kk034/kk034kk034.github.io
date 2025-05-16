@@ -125,18 +125,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -161,6 +161,154 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/16/Hello-Respect-the-Flow/" class="post-title-link" itemprop="url">Hello, Respect the Flow</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-05-16 23:45:02" itemprop="dateCreated datePublished" datetime="2025-05-16T23:45:02+08:00">2025-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-17 00:29:57" itemprop="dateModified" datetime="2025-05-17T00:29:57+08:00">2025-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>只要你還讓 Dev、Test、Staging 混在同一台機器上，就不會有真正可驗證的交付流程。</p>
+<p>測試會失效、整合會混亂、問題無法重現，所有角色彼此踩線，流程變成推責任的戰場。這不是 infra 的問題，而是團隊紀律的問題。</p>
+<p>Respect the flow 不是形式，而是一種責任感 —— 對於環境分層、版本凍結、角色邊界的基本尊重。</p>
+<hr>
+<h2 id="每個環境都有該扮演的角色"><a href="#每個環境都有該扮演的角色" class="headerlink" title="每個環境都有該扮演的角色"></a>每個環境都有該扮演的角色</h2><p>軟體開發流程中，常見的四個環境層級與實體建議如下：</p>
+<ul>
+<li><strong>Development</strong>：自由開發、頻繁變動（如在本地機器或 sandbox VM）</li>
+<li><strong>Testing</strong>：功能驗證、壓力測試（如地端共用測試主機）</li>
+<li><strong>Staging</strong>：驗收整合、模擬實際部署（如雲端與 Prod 同規格的 VM_1）</li>
+<li><strong>Production</strong>：穩定服務、對外公開（如雲端正式環境 VM_2）</li>
+</ul>
+<p>每個環境都應對應獨立部署單元或主機，避免如下常見錯誤：</p>
+<ul>
+<li>test server 被 RD-Team 當作開發環境直接使用</li>
+<li>staging server 被拿來跑 測試流程</li>
+<li>develop 分支還在 push，測試團隊已經在執行驗證</li>
+</ul>
+<p>一旦角色模糊，整個流程就會失去可追溯性與穩定性。</p>
+<hr>
+<h2 id="如果你不-freeze，下游就會-freeze-住"><a href="#如果你不-freeze，下游就會-freeze-住" class="headerlink" title="如果你不 freeze，下游就會 freeze 住"></a>如果你不 freeze，下游就會 freeze 住</h2><p>最典型的情況是：</p>
+<blockquote>
+<p>「前端 在串 test server 上的後端，突然工作被中斷，因為 API 斷線了，然後原本有些欄位一下出現又一下不見…因為後端還在那上面改寫。」</p>
+</blockquote>
+<blockquote>
+<p>「Test-Team 在 test server 上測試，突然 WEB 斷線了，然後原本有些按鈕功能一下出現又一下不見…因為前&#x2F;後端還在那上面改寫。」</p>
+</blockquote>
+<p>這會造成：</p>
+<ul>
+<li>前端 工作被中斷</li>
+<li>前端 整合反覆修改、重構</li>
+<li>測試人員 無法重現 bug、流程斷鏈</li>
+<li>測試結果無效，驗證版本與實際版本不一致</li>
+</ul>
+<p><strong>測試不是幫你 debug，而是驗證一個凍結版本能否穩定上線。</strong></p>
+<hr>
+<h2 id="測試是驗收場，Staging-是最後防線，不是跳板"><a href="#測試是驗收場，Staging-是最後防線，不是跳板" class="headerlink" title="測試是驗收場，Staging 是最後防線，不是跳板"></a>測試是驗收場，Staging 是最後防線，不是跳板</h2><p>測試環境的存在，是為了讓團隊能在明確版本的基礎上進行以下驗證行為：</p>
+<ul>
+<li>前端 對接穩定的 後端 (API &#x2F; Schema)</li>
+<li>Test-Team 驗證功能與流程正確性</li>
+<li>Test-Team 進行壓力測試、功能巡檢</li>
+<li>PM-Team 做出上線前的確認與取捨</li>
+</ul>
+<p>這些前提都建立在一個基本共識上：這台機器上的版本不會變。<br>一旦允許後端隨意 push、改資料結構或重啟服務，這個環境就失去了所有驗證意義。</p>
+<p>但光有 test server 還不夠 —— staging 應該存在，並且與 production 一致（或幾乎一致），讓團隊能在上線前模擬實戰，驗證部署流程與設定變數，找出遺漏與風險。</p>
+<p>如果沒有 staging，等於你是在開發測一半、就直接蓋上正式環境。這不叫快速交付，這叫賭博。</p>
+<p>test server 是為了驗證功能正確，<br>staging server 是為了驗證部署正確。</p>
+<p>兩者都不能省，否則你永遠不知道你測的是什麼、上的是什麼。</p>
+<hr>
+<h2 id="Respect-the-Flow，就是尊重邊界與責任"><a href="#Respect-the-Flow，就是尊重邊界與責任" class="headerlink" title="Respect the Flow，就是尊重邊界與責任"></a>Respect the Flow，就是尊重邊界與責任</h2><p>CI&#x2F;CD 再強大，也沒辦法替你維護流程紀律。<br>Git 分支再清晰，也撐不住你把所有環境塞在一台 VM 上亂部署。</p>
+<p>你可以開發得快，但你不能亂；<br>你可以 iterate 常常 push，但你不能 push 到別人腳下。</p>
+<p>一個乾淨的交付流程需要：</p>
+<ul>
+<li><strong>明確的環境邊界</strong>：dev、test、staging、prod 不可混用</li>
+<li><strong>固定的版本控制</strong>：release 分支一旦部署到 test，就不得更動</li>
+<li><strong>乾淨的部署紀律</strong>：不同環境對應不同 tag 或 commit</li>
+<li><strong>穩定的整合基礎</strong>：測試與前端整合皆依據可重現版本進行</li>
+</ul>
+<p>這些不是為了形式化流程，而是為了讓開發不會踩到測試、測試不會受制於開發、整合能放心進行、責任能夠明確釐清。</p>
+<hr>
+<h2 id="小結：流程是一種信任協議"><a href="#小結：流程是一種信任協議" class="headerlink" title="小結：流程是一種信任協議"></a>小結：流程是一種信任協議</h2><p>流程之所以重要，是因為它讓責任可追、溝通可簡、節奏可持續。</p>
+<p>你可以用最快速度開發，但不能讓這種速度成為其他人的成本。<br>Respect the Flow，代表你願意為「穩定的交付」負責，而不只是寫完一段功能就結束了。<br>這是工程紀律，也是職業態度。</p>
+<blockquote>
+<p>Respect the flow — don’t test on dev, don’t dev on test.</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

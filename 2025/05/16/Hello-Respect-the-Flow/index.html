@@ -20,28 +20,30 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"kk034kk034.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="新創必備 - Slack 高效溝通指南 Slack 作為全球新創公司的溝通利器，不只是聊天工具，更是提升團隊生產力和創造協作氛圍的重要平台。以下，我們將介紹如何善用 Slack，以及新創團隊在使用中不可不知的技巧與避坑經驗。  Slack 的關鍵優勢 集中化的團隊溝通：以頻道（Channel）為單位組織討論，避免重要資訊埋沒在私訊裡。 無縫整合工具：可與 Google Drive、Trello、J">
+    <meta name="description" content="只要你還讓 Dev、Test、Staging 混在同一台機器上，就不會有真正可驗證的交付流程。 測試會失效、整合會混亂、問題無法重現，所有角色彼此踩線，流程變成推責任的戰場。這不是 infra 的問題，而是團隊紀律的問題。 Respect the flow 不是形式，而是一種責任感 —— 對於環境分層、版本凍結、角色邊界的基本尊重。  每個環境都有該扮演的角色軟體開發流程中，常見的四個環境層級與實">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello, My Slack">
-<meta property="og:url" content="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/index.html">
+<meta property="og:title" content="Hello, Respect the Flow">
+<meta property="og:url" content="https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/index.html">
 <meta property="og:site_name" content="Kate&#39;s Blog">
-<meta property="og:description" content="新創必備 - Slack 高效溝通指南 Slack 作為全球新創公司的溝通利器，不只是聊天工具，更是提升團隊生產力和創造協作氛圍的重要平台。以下，我們將介紹如何善用 Slack，以及新創團隊在使用中不可不知的技巧與避坑經驗。  Slack 的關鍵優勢 集中化的團隊溝通：以頻道（Channel）為單位組織討論，避免重要資訊埋沒在私訊裡。 無縫整合工具：可與 Google Drive、Trello、J">
+<meta property="og:description" content="只要你還讓 Dev、Test、Staging 混在同一台機器上，就不會有真正可驗證的交付流程。 測試會失效、整合會混亂、問題無法重現，所有角色彼此踩線，流程變成推責任的戰場。這不是 infra 的問題，而是團隊紀律的問題。 Respect the flow 不是形式，而是一種責任感 —— 對於環境分層、版本凍結、角色邊界的基本尊重。  每個環境都有該扮演的角色軟體開發流程中，常見的四個環境層級與實">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2024-11-23T16:04:11.000Z">
-<meta property="article:modified_time" content="2025-02-23T09:37:10.000Z">
+<meta property="article:published_time" content="2025-05-16T15:45:02.000Z">
+<meta property="article:modified_time" content="2025-05-16T16:29:57.922Z">
 <meta property="article:author" content="Kate Cheng">
-<meta property="article:tag" content="PM">
+<meta property="article:tag" content="environment">
+<meta property="article:tag" content="release">
+<meta property="article:tag" content="deploy">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/">
+<link rel="canonical" href="https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/","path":"2024/11/24/Hello-My-Slack/","title":"Hello, My Slack"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/","path":"2025/05/16/Hello-Respect-the-Flow/","title":"Hello, Respect the Flow"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hello, My Slack | Kate's Blog</title>
+<title>Hello, Respect the Flow | Kate's Blog</title>
   
 
 
@@ -114,7 +116,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0%E5%89%B5%E5%BF%85%E5%82%99-Slack-%E9%AB%98%E6%95%88%E6%BA%9D%E9%80%9A%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">新創必備 - Slack 高效溝通指南</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Slack-%E7%9A%84%E9%97%9C%E9%8D%B5%E5%84%AA%E5%8B%A2"><span class="nav-number">1.1.</span> <span class="nav-text">Slack 的關鍵優勢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A0%BB%E9%81%93%E7%AE%A1%E7%90%86%E6%8A%80%E5%B7%A7"><span class="nav-number">1.2.</span> <span class="nav-text">頻道管理技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%85%E5%82%99%E9%A0%BB%E9%81%93%E8%A8%AD%E7%BD%AE%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">必備頻道設置建議</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%BB%E9%81%93%E5%91%BD%E5%90%8D%E6%9C%80%E4%BD%B3%E5%AF%A6%E8%B8%90"><span class="nav-number">1.2.2.</span> <span class="nav-text">頻道命名最佳實踐</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E7%94%A8%E6%8A%80%E5%B7%A7%E8%88%87%E9%81%BF%E5%9D%91%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.3.</span> <span class="nav-text">實用技巧與避坑建議</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AA%94%E6%A1%88%E8%88%87%E8%A8%8A%E6%81%AF%E7%AE%A1%E7%90%86%E7%A7%98%E8%A8%A3"><span class="nav-number">1.4.</span> <span class="nav-text">檔案與訊息管理秘訣</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E5%AF%A6%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97%E8%88%87%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B"><span class="nav-number">1.5.</span> <span class="nav-text">真實使用心得與成功案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E%EF%BC%9ASlack-%E6%98%AF%E6%96%B0%E5%89%B5%E6%96%87%E5%8C%96%E7%9A%84%E5%BB%B6%E4%BC%B8"><span class="nav-number">1.6.</span> <span class="nav-text">結語：Slack 是新創文化的延伸</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%8F%E5%80%8B%E7%92%B0%E5%A2%83%E9%83%BD%E6%9C%89%E8%A9%B2%E6%89%AE%E6%BC%94%E7%9A%84%E8%A7%92%E8%89%B2"><span class="nav-number">1.</span> <span class="nav-text">每個環境都有該扮演的角色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E4%BD%A0%E4%B8%8D-freeze%EF%BC%8C%E4%B8%8B%E6%B8%B8%E5%B0%B1%E6%9C%83-freeze-%E4%BD%8F"><span class="nav-number">2.</span> <span class="nav-text">如果你不 freeze，下游就會 freeze 住</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E6%98%AF%E9%A9%97%E6%94%B6%E5%A0%B4%EF%BC%8CStaging-%E6%98%AF%E6%9C%80%E5%BE%8C%E9%98%B2%E7%B7%9A%EF%BC%8C%E4%B8%8D%E6%98%AF%E8%B7%B3%E6%9D%BF"><span class="nav-number">3.</span> <span class="nav-text">測試是驗收場，Staging 是最後防線，不是跳板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Respect-the-Flow%EF%BC%8C%E5%B0%B1%E6%98%AF%E5%B0%8A%E9%87%8D%E9%82%8A%E7%95%8C%E8%88%87%E8%B2%AC%E4%BB%BB"><span class="nav-number">4.</span> <span class="nav-text">Respect the Flow，就是尊重邊界與責任</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%B5%90%EF%BC%9A%E6%B5%81%E7%A8%8B%E6%98%AF%E4%B8%80%E7%A8%AE%E4%BF%A1%E4%BB%BB%E5%8D%94%E8%AD%B0"><span class="nav-number">5.</span> <span class="nav-text">小結：流程是一種信任協議</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -175,7 +177,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/GGC02414-1.jpg">
@@ -188,12 +190,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Hello, My Slack | Kate's Blog">
+      <meta itemprop="name" content="Hello, Respect the Flow | Kate's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello, My Slack
+          Hello, Respect the Flow
         </h1>
 
         <div class="post-meta-container">
@@ -204,14 +206,14 @@
       </span>
       <span class="post-meta-item-text">發表於</span>
 
-      <time title="創建時間：2024-11-24 00:04:11" itemprop="dateCreated datePublished" datetime="2024-11-24T00:04:11+08:00">2024-11-24</time>
+      <time title="創建時間：2025-05-16 23:45:02" itemprop="dateCreated datePublished" datetime="2025-05-16T23:45:02+08:00">2025-05-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-02-23 17:37:10" itemprop="dateModified" datetime="2025-02-23T17:37:10+08:00">2025-02-23</time>
+      <time title="修改時間：2025-05-17 00:29:57" itemprop="dateModified" datetime="2025-05-17T00:29:57+08:00">2025-05-17</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -219,7 +221,7 @@
       </span>
       <span class="post-meta-item-text">分類於</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/build/" itemprop="url" rel="index"><span itemprop="name">build</span></a>
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
         </span>
     </span>
 
@@ -239,99 +241,70 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="新創必備-Slack-高效溝通指南"><a href="#新創必備-Slack-高效溝通指南" class="headerlink" title="新創必備 - Slack 高效溝通指南"></a>新創必備 - Slack 高效溝通指南</h1><blockquote>
-<p>Slack 作為全球新創公司的溝通利器，不只是聊天工具，更是提升團隊生產力和創造協作氛圍的重要平台。以下，我們將介紹如何善用 Slack，以及新創團隊在使用中不可不知的技巧與避坑經驗。</p>
-</blockquote>
-<h2 id="Slack-的關鍵優勢"><a href="#Slack-的關鍵優勢" class="headerlink" title="Slack 的關鍵優勢"></a>Slack 的關鍵優勢</h2><ol>
-<li>集中化的團隊溝通：以頻道（Channel）為單位組織討論，避免重要資訊埋沒在私訊裡。</li>
-<li>無縫整合工具：可與 Google Drive、Trello、Jira 等工具連接，輕鬆導入工作流程。</li>
-<li>強大的搜尋功能：歷史訊息、檔案共享一鍵即達，不怕漏掉任何細節。</li>
-<li>彈性通知設定：根據需要自訂通知，保持專注且不被打擾。</li>
-</ol>
-<h2 id="頻道管理技巧"><a href="#頻道管理技巧" class="headerlink" title="頻道管理技巧"></a>頻道管理技巧</h2><h3 id="必備頻道設置建議"><a href="#必備頻道設置建議" class="headerlink" title="必備頻道設置建議"></a>必備頻道設置建議</h3><ul>
-<li>基礎頻道<ul>
-<li>#announcements：重要公告、政策變更</li>
-<li>#watercooler：非正式交流，建立團隊文化</li>
-</ul>
-</li>
-<li>專案頻道<br> 為每個專案建立專屬頻道，如：#project-xyz</li>
-<li>功能型頻道<ul>
-<li>#help-it：IT 支援與技術問題解答</li>
-<li>#feedback：用戶或內部回饋收集</li>
-</ul>
-</li>
-</ul>
-<h3 id="頻道命名最佳實踐"><a href="#頻道命名最佳實踐" class="headerlink" title="頻道命名最佳實踐"></a>頻道命名最佳實踐</h3><ul>
-<li>格式：[分類]-[內容]，如 team-frontend 或 project-launch</li>
-<li>範圍明確：避免大雜燴頻道，確保每個頻道討論目標明確。</li>
-</ul>
-<h2 id="實用技巧與避坑建議"><a href="#實用技巧與避坑建議" class="headerlink" title="實用技巧與避坑建議"></a>實用技巧與避坑建議</h2><ol>
-<li><p>善用線程（Threads）<br> 避免長篇對話占滿頻道。所有回應統一用線程，保持主頻道清爽、聚焦。</p>
-<blockquote>
-<p>避坑提醒：過多的線程回覆會讓訊息難以察覺。對重要回覆，記得用表情符號（Emoji）標記主訊息。</p>
-</blockquote>
-</li>
-<li><p>表情符號不只是「表情」<br> Slack 的 Emoji 功能遠超你想像，以下是一些高效應用：<br> ✅ 已處理<br> ❓ 需要澄清<br> 👀 正在查看<br> 🚀 已完成</p>
-<blockquote>
-<p>避坑提醒：不要使用過於模糊的表情，確保團隊理解統一。</p>
-</blockquote>
-</li>
-<li><p>整合工具，簡化流程<br> Slack 的真正威力來自它的整合能力：</p>
+    <div class="post-body" itemprop="articleBody"><p>只要你還讓 Dev、Test、Staging 混在同一台機器上，就不會有真正可驗證的交付流程。</p>
+<p>測試會失效、整合會混亂、問題無法重現，所有角色彼此踩線，流程變成推責任的戰場。這不是 infra 的問題，而是團隊紀律的問題。</p>
+<p>Respect the flow 不是形式，而是一種責任感 —— 對於環境分層、版本凍結、角色邊界的基本尊重。</p>
+<hr>
+<h2 id="每個環境都有該扮演的角色"><a href="#每個環境都有該扮演的角色" class="headerlink" title="每個環境都有該扮演的角色"></a>每個環境都有該扮演的角色</h2><p>軟體開發流程中，常見的四個環境層級與實體建議如下：</p>
 <ul>
-<li>專案管理：結合 Trello，新增任務或更新進度。</li>
-<li>文件共享：Google Drive 提醒與授權直接在 Slack 完成。</li>
-<li>錯誤追蹤：Jira Bot 自動提醒 Bug 狀態更新。</li>
+<li><strong>Development</strong>：自由開發、頻繁變動（如在本地機器或 sandbox VM）</li>
+<li><strong>Testing</strong>：功能驗證、壓力測試（如地端共用測試主機）</li>
+<li><strong>Staging</strong>：驗收整合、模擬實際部署（如雲端與 Prod 同規格的 VM_1）</li>
+<li><strong>Production</strong>：穩定服務、對外公開（如雲端正式環境 VM_2）</li>
 </ul>
-<blockquote>
-<p>避坑提醒：整合過多工具可能導致通知轟炸，請謹慎設置通知規則。</p>
-</blockquote>
-</li>
-<li><p>高效訊息格式</p>
-</li>
-</ol>
+<p>每個環境都應對應獨立部署單元或主機，避免如下常見錯誤：</p>
 <ul>
-<li><p>緊急通知：🚨 [緊急]</p>
-<blockquote>
-<p>範例：🚨 [緊急] 伺服器無法連線，需工程團隊協助。</p>
-</blockquote>
-</li>
-<li><p>重要回顧：📌 [會議記錄]</p>
-<blockquote>
-<p>範例：📌 [會議記錄] 週會討論重點已上傳至 Google Drive。</p>
-</blockquote>
-</li>
-<li><p>一般討論：用開頭標籤簡化分類，像 [求助]、[建議]。</p>
-</li>
+<li>test server 被 RD-Team 當作開發環境直接使用</li>
+<li>staging server 被拿來跑 測試流程</li>
+<li>develop 分支還在 push，測試團隊已經在執行驗證</li>
 </ul>
-<ol start="5">
-<li>設定智能通知</li>
-</ol>
+<p>一旦角色模糊，整個流程就會失去可追溯性與穩定性。</p>
+<hr>
+<h2 id="如果你不-freeze，下游就會-freeze-住"><a href="#如果你不-freeze，下游就會-freeze-住" class="headerlink" title="如果你不 freeze，下游就會 freeze 住"></a>如果你不 freeze，下游就會 freeze 住</h2><p>最典型的情況是：</p>
+<blockquote>
+<p>「前端 在串 test server 上的後端，突然工作被中斷，因為 API 斷線了，然後原本有些欄位一下出現又一下不見…因為後端還在那上面改寫。」</p>
+</blockquote>
+<blockquote>
+<p>「Test-Team 在 test server 上測試，突然 WEB 斷線了，然後原本有些按鈕功能一下出現又一下不見…因為前&#x2F;後端還在那上面改寫。」</p>
+</blockquote>
+<p>這會造成：</p>
 <ul>
-<li>核心頻道通知永遠開啟：如 #team-product。</li>
-<li>次要頻道開關通知：設置為僅關鍵字提醒（如 “deadline” 或 “urgent”）。</li>
-<li>設定「勿擾模式」：自動告知對方目前狀態，避免無意干擾。</li>
+<li>前端 工作被中斷</li>
+<li>前端 整合反覆修改、重構</li>
+<li>測試人員 無法重現 bug、流程斷鏈</li>
+<li>測試結果無效，驗證版本與實際版本不一致</li>
 </ul>
-<h2 id="檔案與訊息管理秘訣"><a href="#檔案與訊息管理秘訣" class="headerlink" title="檔案與訊息管理秘訣"></a>檔案與訊息管理秘訣</h2><ul>
-<li><p>命名格式統一<br> 如：[團隊名稱]-[檔案類型]-[日期]，方便搜尋。</p>
+<p><strong>測試不是幫你 debug，而是驗證一個凍結版本能否穩定上線。</strong></p>
+<hr>
+<h2 id="測試是驗收場，Staging-是最後防線，不是跳板"><a href="#測試是驗收場，Staging-是最後防線，不是跳板" class="headerlink" title="測試是驗收場，Staging 是最後防線，不是跳板"></a>測試是驗收場，Staging 是最後防線，不是跳板</h2><p>測試環境的存在，是為了讓團隊能在明確版本的基礎上進行以下驗證行為：</p>
+<ul>
+<li>前端 對接穩定的 後端 (API &#x2F; Schema)</li>
+<li>Test-Team 驗證功能與流程正確性</li>
+<li>Test-Team 進行壓力測試、功能巡檢</li>
+<li>PM-Team 做出上線前的確認與取捨</li>
+</ul>
+<p>這些前提都建立在一個基本共識上：這台機器上的版本不會變。<br>一旦允許後端隨意 push、改資料結構或重啟服務，這個環境就失去了所有驗證意義。</p>
+<p>但光有 test server 還不夠 —— staging 應該存在，並且與 production 一致（或幾乎一致），讓團隊能在上線前模擬實戰，驗證部署流程與設定變數，找出遺漏與風險。</p>
+<p>如果沒有 staging，等於你是在開發測一半、就直接蓋上正式環境。這不叫快速交付，這叫賭博。</p>
+<p>test server 是為了驗證功能正確，<br>staging server 是為了驗證部署正確。</p>
+<p>兩者都不能省，否則你永遠不知道你測的是什麼、上的是什麼。</p>
+<hr>
+<h2 id="Respect-the-Flow，就是尊重邊界與責任"><a href="#Respect-the-Flow，就是尊重邊界與責任" class="headerlink" title="Respect the Flow，就是尊重邊界與責任"></a>Respect the Flow，就是尊重邊界與責任</h2><p>CI&#x2F;CD 再強大，也沒辦法替你維護流程紀律。<br>Git 分支再清晰，也撐不住你把所有環境塞在一台 VM 上亂部署。</p>
+<p>你可以開發得快，但你不能亂；<br>你可以 iterate 常常 push，但你不能 push 到別人腳下。</p>
+<p>一個乾淨的交付流程需要：</p>
+<ul>
+<li><strong>明確的環境邊界</strong>：dev、test、staging、prod 不可混用</li>
+<li><strong>固定的版本控制</strong>：release 分支一旦部署到 test，就不得更動</li>
+<li><strong>乾淨的部署紀律</strong>：不同環境對應不同 tag 或 commit</li>
+<li><strong>穩定的整合基礎</strong>：測試與前端整合皆依據可重現版本進行</li>
+</ul>
+<p>這些不是為了形式化流程，而是為了讓開發不會踩到測試、測試不會受制於開發、整合能放心進行、責任能夠明確釐清。</p>
+<hr>
+<h2 id="小結：流程是一種信任協議"><a href="#小結：流程是一種信任協議" class="headerlink" title="小結：流程是一種信任協議"></a>小結：流程是一種信任協議</h2><p>流程之所以重要，是因為它讓責任可追、溝通可簡、節奏可持續。</p>
+<p>你可以用最快速度開發，但不能讓這種速度成為其他人的成本。<br>Respect the Flow，代表你願意為「穩定的交付」負責，而不只是寫完一段功能就結束了。<br>這是工程紀律，也是職業態度。</p>
 <blockquote>
-<p>範例：design-mockup-20241124.png</p>
+<p>Respect the flow — don’t test on dev, don’t dev on test.</p>
 </blockquote>
-</li>
-<li><p>過時資訊清理<br> 每月固定整理頻道的舊訊息與檔案，避免占用空間。</p>
-</li>
-<li><p>重要內容書籤化<br> 使用 Slack 的書籤功能（Pin）標記頻道中不可遺漏的訊息。</p>
-</li>
-</ul>
-<h2 id="真實使用心得與成功案例"><a href="#真實使用心得與成功案例" class="headerlink" title="真實使用心得與成功案例"></a>真實使用心得與成功案例</h2><ol>
-<li><p>透明化決策<br> 某團隊透過 Slack 頻道公開所有會議記錄與討論，讓全體成員清楚決策過程，提升信任與效率。</p>
-</li>
-<li><p>敏捷開發支持<br> 工程團隊在專案頻道中整合 GitHub 和 CI&#x2F;CD 工具，實現即時部署通知，大幅縮短回應時間。</p>
-</li>
-<li><p>打造歸屬感<br> 定期舉辦「Slack 傳情活動」，利用 Emoji 投票或 GIF 分享，促進跨部門互動。</p>
-</li>
-</ol>
-<h2 id="結語：Slack-是新創文化的延伸"><a href="#結語：Slack-是新創文化的延伸" class="headerlink" title="結語：Slack 是新創文化的延伸"></a>結語：Slack 是新創文化的延伸</h2><p>Slack 的力量在於它能幫助團隊打造高效、開放且友善的工作環境。但要真正發揮它的潛力，依賴的不只是功能，而是對工具的理解與文化的實踐。</p>
-<p>現在就從優化你的 Slack 開始，讓它成為新創成功的秘密武器！</p>
 
     </div>
 
@@ -349,7 +322,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>文章連結：</strong>
-      <a href="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/" title="Hello, My Slack">https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/</a>
+      <a href="https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/" title="Hello, Respect the Flow">https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -358,21 +331,20 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/PM/" rel="tag"># PM</a>
+              <a href="/tags/environment/" rel="tag"># environment</a>
+              <a href="/tags/release/" rel="tag"># release</a>
+              <a href="/tags/deploy/" rel="tag"># deploy</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2024/11/23/Hello-My-Jira/" rel="prev" title="Hello, My Jira">
-                  <i class="fa fa-angle-left"></i> Hello, My Jira
+                <a href="/2025/05/03/Hello-Backend/" rel="prev" title="Hello, Backend">
+                  <i class="fa fa-angle-left"></i> Hello, Backend
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2025/02/23/Hello-My-Dev-Env/" rel="next" title="Hello, My Dev Env">
-                  Hello, My Dev Env <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>
