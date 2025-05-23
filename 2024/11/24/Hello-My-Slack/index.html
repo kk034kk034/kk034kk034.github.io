@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kk034kk034.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="新創必備 - Slack 高效溝通指南 Slack 作為全球新創公司的溝通利器，不只是聊天工具，更是提升團隊生產力和創造協作氛圍的重要平台。以下，我們將介紹如何善用 Slack，以及新創團隊在使用中不可不知的技巧與避坑經驗。  Slack 的關鍵優勢 集中化的團隊溝通：以頻道（Channel）為單位組織討論，避免重要資訊埋沒在私訊裡。 無縫整合工具：可與 Google Drive、Trello、J">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hello, My Slack">
+<meta property="og:url" content="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/index.html">
+<meta property="og:site_name" content="Kate&#39;s Blog">
+<meta property="og:description" content="新創必備 - Slack 高效溝通指南 Slack 作為全球新創公司的溝通利器，不只是聊天工具，更是提升團隊生產力和創造協作氛圍的重要平台。以下，我們將介紹如何善用 Slack，以及新創團隊在使用中不可不知的技巧與避坑經驗。  Slack 的關鍵優勢 集中化的團隊溝通：以頻道（Channel）為單位組織討論，避免重要資訊埋沒在私訊裡。 無縫整合工具：可與 Google Drive、Trello、J">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-11-23T16:04:11.000Z">
+<meta property="article:modified_time" content="2025-02-23T09:37:10.000Z">
+<meta property="article:author" content="Kate Cheng">
+<meta property="article:tag" content="PM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/","path":"2024/11/24/Hello-My-Slack/","title":"Hello, My Slack"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Hello, My Slack | Kate's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Kate's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0%E5%89%B5%E5%BF%85%E5%82%99-Slack-%E9%AB%98%E6%95%88%E6%BA%9D%E9%80%9A%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">新創必備 - Slack 高效溝通指南</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Slack-%E7%9A%84%E9%97%9C%E9%8D%B5%E5%84%AA%E5%8B%A2"><span class="nav-number">1.1.</span> <span class="nav-text">Slack 的關鍵優勢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A0%BB%E9%81%93%E7%AE%A1%E7%90%86%E6%8A%80%E5%B7%A7"><span class="nav-number">1.2.</span> <span class="nav-text">頻道管理技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%85%E5%82%99%E9%A0%BB%E9%81%93%E8%A8%AD%E7%BD%AE%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">必備頻道設置建議</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%BB%E9%81%93%E5%91%BD%E5%90%8D%E6%9C%80%E4%BD%B3%E5%AF%A6%E8%B8%90"><span class="nav-number">1.2.2.</span> <span class="nav-text">頻道命名最佳實踐</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E7%94%A8%E6%8A%80%E5%B7%A7%E8%88%87%E9%81%BF%E5%9D%91%E5%BB%BA%E8%AD%B0"><span class="nav-number">1.3.</span> <span class="nav-text">實用技巧與避坑建議</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AA%94%E6%A1%88%E8%88%87%E8%A8%8A%E6%81%AF%E7%AE%A1%E7%90%86%E7%A7%98%E8%A8%A3"><span class="nav-number">1.4.</span> <span class="nav-text">檔案與訊息管理秘訣</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E5%AF%A6%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97%E8%88%87%E6%88%90%E5%8A%9F%E6%A1%88%E4%BE%8B"><span class="nav-number">1.5.</span> <span class="nav-text">真實使用心得與成功案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E%EF%BC%9ASlack-%E6%98%AF%E6%96%B0%E5%89%B5%E6%96%87%E5%8C%96%E7%9A%84%E5%BB%B6%E4%BC%B8"><span class="nav-number">1.6.</span> <span class="nav-text">結語：Slack 是新創文化的延伸</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kate Cheng"
+      src="/images/GGC02414-1.jpg">
+  <p class="site-author-name" itemprop="name">Kate Cheng</p>
+  <div class="site-description" itemprop="description">Work Lift Balance</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kk034kk034" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kk034kk034" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/kate-cheng-a8b94a189/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;kate-cheng-a8b94a189&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Hello, My Slack | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hello, My Slack
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2024-11-24 00:04:11" itemprop="dateCreated datePublished" datetime="2024-11-24T00:04:11+08:00">2024-11-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-02-23 17:37:10" itemprop="dateModified" datetime="2025-02-23T17:37:10+08:00">2025-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/build/" itemprop="url" rel="index"><span itemprop="name">build</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="新創必備-Slack-高效溝通指南"><a href="#新創必備-Slack-高效溝通指南" class="headerlink" title="新創必備 - Slack 高效溝通指南"></a>新創必備 - Slack 高效溝通指南</h1><blockquote>
+<p>Slack 作為全球新創公司的溝通利器，不只是聊天工具，更是提升團隊生產力和創造協作氛圍的重要平台。以下，我們將介紹如何善用 Slack，以及新創團隊在使用中不可不知的技巧與避坑經驗。</p>
+</blockquote>
+<h2 id="Slack-的關鍵優勢"><a href="#Slack-的關鍵優勢" class="headerlink" title="Slack 的關鍵優勢"></a>Slack 的關鍵優勢</h2><ol>
+<li>集中化的團隊溝通：以頻道（Channel）為單位組織討論，避免重要資訊埋沒在私訊裡。</li>
+<li>無縫整合工具：可與 Google Drive、Trello、Jira 等工具連接，輕鬆導入工作流程。</li>
+<li>強大的搜尋功能：歷史訊息、檔案共享一鍵即達，不怕漏掉任何細節。</li>
+<li>彈性通知設定：根據需要自訂通知，保持專注且不被打擾。</li>
+</ol>
+<h2 id="頻道管理技巧"><a href="#頻道管理技巧" class="headerlink" title="頻道管理技巧"></a>頻道管理技巧</h2><h3 id="必備頻道設置建議"><a href="#必備頻道設置建議" class="headerlink" title="必備頻道設置建議"></a>必備頻道設置建議</h3><ul>
+<li>基礎頻道<ul>
+<li>#announcements：重要公告、政策變更</li>
+<li>#watercooler：非正式交流，建立團隊文化</li>
+</ul>
+</li>
+<li>專案頻道<br> 為每個專案建立專屬頻道，如：#project-xyz</li>
+<li>功能型頻道<ul>
+<li>#help-it：IT 支援與技術問題解答</li>
+<li>#feedback：用戶或內部回饋收集</li>
+</ul>
+</li>
+</ul>
+<h3 id="頻道命名最佳實踐"><a href="#頻道命名最佳實踐" class="headerlink" title="頻道命名最佳實踐"></a>頻道命名最佳實踐</h3><ul>
+<li>格式：[分類]-[內容]，如 team-frontend 或 project-launch</li>
+<li>範圍明確：避免大雜燴頻道，確保每個頻道討論目標明確。</li>
+</ul>
+<h2 id="實用技巧與避坑建議"><a href="#實用技巧與避坑建議" class="headerlink" title="實用技巧與避坑建議"></a>實用技巧與避坑建議</h2><ol>
+<li><p>善用線程（Threads）<br> 避免長篇對話占滿頻道。所有回應統一用線程，保持主頻道清爽、聚焦。</p>
+<blockquote>
+<p>避坑提醒：過多的線程回覆會讓訊息難以察覺。對重要回覆，記得用表情符號（Emoji）標記主訊息。</p>
+</blockquote>
+</li>
+<li><p>表情符號不只是「表情」<br> Slack 的 Emoji 功能遠超你想像，以下是一些高效應用：<br> ✅ 已處理<br> ❓ 需要澄清<br> 👀 正在查看<br> 🚀 已完成</p>
+<blockquote>
+<p>避坑提醒：不要使用過於模糊的表情，確保團隊理解統一。</p>
+</blockquote>
+</li>
+<li><p>整合工具，簡化流程<br> Slack 的真正威力來自它的整合能力：</p>
+<ul>
+<li>專案管理：結合 Trello，新增任務或更新進度。</li>
+<li>文件共享：Google Drive 提醒與授權直接在 Slack 完成。</li>
+<li>錯誤追蹤：Jira Bot 自動提醒 Bug 狀態更新。</li>
+</ul>
+<blockquote>
+<p>避坑提醒：整合過多工具可能導致通知轟炸，請謹慎設置通知規則。</p>
+</blockquote>
+</li>
+<li><p>高效訊息格式</p>
+</li>
+</ol>
+<ul>
+<li><p>緊急通知：🚨 [緊急]</p>
+<blockquote>
+<p>範例：🚨 [緊急] 伺服器無法連線，需工程團隊協助。</p>
+</blockquote>
+</li>
+<li><p>重要回顧：📌 [會議記錄]</p>
+<blockquote>
+<p>範例：📌 [會議記錄] 週會討論重點已上傳至 Google Drive。</p>
+</blockquote>
+</li>
+<li><p>一般討論：用開頭標籤簡化分類，像 [求助]、[建議]。</p>
+</li>
+</ul>
+<ol start="5">
+<li>設定智能通知</li>
+</ol>
+<ul>
+<li>核心頻道通知永遠開啟：如 #team-product。</li>
+<li>次要頻道開關通知：設置為僅關鍵字提醒（如 “deadline” 或 “urgent”）。</li>
+<li>設定「勿擾模式」：自動告知對方目前狀態，避免無意干擾。</li>
+</ul>
+<h2 id="檔案與訊息管理秘訣"><a href="#檔案與訊息管理秘訣" class="headerlink" title="檔案與訊息管理秘訣"></a>檔案與訊息管理秘訣</h2><ul>
+<li><p>命名格式統一<br> 如：[團隊名稱]-[檔案類型]-[日期]，方便搜尋。</p>
+<blockquote>
+<p>範例：design-mockup-20241124.png</p>
+</blockquote>
+</li>
+<li><p>過時資訊清理<br> 每月固定整理頻道的舊訊息與檔案，避免占用空間。</p>
+</li>
+<li><p>重要內容書籤化<br> 使用 Slack 的書籤功能（Pin）標記頻道中不可遺漏的訊息。</p>
+</li>
+</ul>
+<h2 id="真實使用心得與成功案例"><a href="#真實使用心得與成功案例" class="headerlink" title="真實使用心得與成功案例"></a>真實使用心得與成功案例</h2><ol>
+<li><p>透明化決策<br> 某團隊透過 Slack 頻道公開所有會議記錄與討論，讓全體成員清楚決策過程，提升信任與效率。</p>
+</li>
+<li><p>敏捷開發支持<br> 工程團隊在專案頻道中整合 GitHub 和 CI&#x2F;CD 工具，實現即時部署通知，大幅縮短回應時間。</p>
+</li>
+<li><p>打造歸屬感<br> 定期舉辦「Slack 傳情活動」，利用 Emoji 投票或 GIF 分享，促進跨部門互動。</p>
+</li>
+</ol>
+<h2 id="結語：Slack-是新創文化的延伸"><a href="#結語：Slack-是新創文化的延伸" class="headerlink" title="結語：Slack 是新創文化的延伸"></a>結語：Slack 是新創文化的延伸</h2><p>Slack 的力量在於它能幫助團隊打造高效、開放且友善的工作環境。但要真正發揮它的潛力，依賴的不只是功能，而是對工具的理解與文化的實踐。</p>
+<p>現在就從優化你的 Slack 開始，讓它成為新創成功的秘密武器！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Kate Cheng
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/" title="Hello, My Slack">https://kk034kk034.github.io/2024/11/24/Hello-My-Slack/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/PM/" rel="tag"># PM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/23/Hello-My-Jira/" rel="prev" title="Hello, My Jira">
+                  <i class="fa fa-angle-left"></i> Hello, My Jira
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/02/23/Hello-My-Dev-Env/" rel="next" title="Hello, My Dev Env">
+                  Hello, My Dev Env <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Kate Cheng</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
