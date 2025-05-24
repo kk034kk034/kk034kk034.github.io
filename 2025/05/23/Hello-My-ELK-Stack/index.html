@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kk034kk034.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言我不是維運工程師，但我希望自己開發的系統能夠：  在用戶發現問題之前，先自己發現並處理   出錯時能快速排查，不靠 *.log 苦力 grep   平時能留下資料，未來好做統計與系統評估  這篇文章會分享我怎麼將開源工具整合進我的系統：使用 Filebeat、Logstash、Elasticsearch、Kibana（簡稱 ELK），快速搭出一套後端 log 監控架構。不靠複雜 infra，全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hello, My ELK Stack">
+<meta property="og:url" content="https://kk034kk034.github.io/2025/05/23/Hello-My-ELK-Stack/index.html">
+<meta property="og:site_name" content="Kate&#39;s Blog">
+<meta property="og:description" content="前言我不是維運工程師，但我希望自己開發的系統能夠：  在用戶發現問題之前，先自己發現並處理   出錯時能快速排查，不靠 *.log 苦力 grep   平時能留下資料，未來好做統計與系統評估  這篇文章會分享我怎麼將開源工具整合進我的系統：使用 Filebeat、Logstash、Elasticsearch、Kibana（簡稱 ELK），快速搭出一套後端 log 監控架構。不靠複雜 infra，全">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2025-05-23T13:39:56.000Z">
+<meta property="article:modified_time" content="2025-05-24T11:59:18.264Z">
+<meta property="article:author" content="Kate Cheng">
+<meta property="article:tag" content="log">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://kk034kk034.github.io/2025/05/23/Hello-My-ELK-Stack/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://kk034kk034.github.io/2025/05/23/Hello-My-ELK-Stack/","path":"2025/05/23/Hello-My-ELK-Stack/","title":"Hello, My ELK Stack"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Hello, My ELK Stack | Kate's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Kate's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Quick-Start"><span class="nav-number">2.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%A7%8B%E6%A6%82%E8%A6%BD%EF%BC%9AFastify-ELK-Flow"><span class="nav-number">2.1.</span> <span class="nav-text">架構概覽：Fastify + ELK Flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99%EF%BC%9AFastify-%E5%AF%AB%E5%85%A5-JSON-Log"><span class="nav-number">2.2.</span> <span class="nav-text">事前準備：Fastify 寫入 JSON Log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E6%95%B4%E5%90%88%EF%BC%9A%E8%AE%93-Log-%E8%87%AA%E5%8B%95%E9%80%B2%E5%85%A5-ELK"><span class="nav-number">2.3.</span> <span class="nav-text">設定整合：讓 Log 自動進入 ELK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%95%9F%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">啟用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E6%9E%9C"><span class="nav-number">2.5.</span> <span class="nav-text">成果</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kate Cheng"
+      src="/images/GGC02414-1.jpg">
+  <p class="site-author-name" itemprop="name">Kate Cheng</p>
+  <div class="site-description" itemprop="description">Work Lift Balance</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kk034kk034" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kk034kk034" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/kate-cheng-a8b94a189/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;kate-cheng-a8b94a189&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/23/Hello-My-ELK-Stack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Hello, My ELK Stack | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hello, My ELK Stack
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-05-23 21:39:56" itemprop="dateCreated datePublished" datetime="2025-05-23T21:39:56+08:00">2025-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-24 19:59:18" itemprop="dateModified" datetime="2025-05-24T19:59:18+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我不是維運工程師，但我希望自己開發的系統能夠：</p>
+<ol>
+<li>在用戶發現問題之前，先自己發現並處理  </li>
+<li>出錯時能快速排查，不靠 *.log 苦力 grep  </li>
+<li>平時能留下資料，未來好做統計與系統評估</li>
+</ol>
+<p>這篇文章會分享我怎麼將開源工具整合進我的系統：<br>使用 <strong>Filebeat、Logstash、Elasticsearch、Kibana</strong>（簡稱 ELK），快速搭出一套後端 log 監控架構。<br>不靠複雜 infra，全程用 Docker Compose 一鍵啟動。<br>📦 完整 docker-compose.yml 放這裡 👉 <a target="_blank" rel="noopener" href="https://github.com/kk034kk034/management-system/blob/main/dev-compose.yml">GitHub Repo</a></p>
+<h1 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h1><h2 id="架構概覽：Fastify-ELK-Flow"><a href="#架構概覽：Fastify-ELK-Flow" class="headerlink" title="架構概覽：Fastify + ELK Flow"></a>架構概覽：Fastify + ELK Flow</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Fastify（logs/*.log）</span><br><span class="line">  ↓</span><br><span class="line">Filebeat：收集 log，JSON native 支援佳</span><br><span class="line">  ↓</span><br><span class="line">Logstash：欄位分類、格式轉換、前處理</span><br><span class="line">  ↓</span><br><span class="line">Elasticsearch：儲存與查詢，支援自動分日索引</span><br><span class="line">  ↓</span><br><span class="line">Kibana：查詢 &amp; 圖表視覺化介面</span><br></pre></td></tr></table></figure>
+
+<h2 id="事前準備：Fastify-寫入-JSON-Log"><a href="#事前準備：Fastify-寫入-JSON-Log" class="headerlink" title="事前準備：Fastify 寫入 JSON Log"></a>事前準備：Fastify 寫入 JSON Log</h2><p>我在 Fastify 專案中使用 Winston，把每次 API 請求都記錄成 JSON 格式的 log 檔案，方便後續被 ELK 收集與分析。</p>
+<p>📁 log 檔案目錄範例如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/fastify_deploy/logs/</span><br><span class="line">├── api-access.log        <span class="comment"># 每筆 API 請求</span></span><br></pre></td></tr></table></figure>
+
+<p>📝 實際 log 範例（每行為一筆 JSON）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2025-05-23 08:15:24] INFO: &#123;&quot;timestamp&quot;:&quot;2025-05-23T08:15:24.215Z&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;url&quot;:&quot;/api/v1/auth/login&quot;,&quot;status&quot;:200,&quot;duration&quot;:297,&quot;user_id&quot;:&quot;guest&quot;,&quot;ip&quot;:&quot;172.18.0.1&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="設定整合：讓-Log-自動進入-ELK"><a href="#設定整合：讓-Log-自動進入-ELK" class="headerlink" title="設定整合：讓 Log 自動進入 ELK"></a>設定整合：讓 Log 自動進入 ELK</h2><p>所有服務都跑在 Docker 容器中，而 Fastify 寫出的 log 則透過 volume 掛載到 Filebeat。(如 Repo 所示之 dev-compose.yml)<br>並在啟用前，建立ELK所需設定檔。(如下所示)</p>
+<p>📂 檔案結構（dev-compose.yml目錄下）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── filebeat/</span><br><span class="line">│   └── filebeat.yml <span class="comment"># 輸出設定</span></span><br><span class="line">├── logstash/</span><br><span class="line">│   └── pipeline/</span><br><span class="line">│       └── logstash.conf <span class="comment"># 解析規則</span></span><br></pre></td></tr></table></figure>
+
+<p>📄 filebeat&#x2F;filebeat.yml 範例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">filebeat.inputs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">log</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/logs/*.log</span> <span class="comment"># 掛載 fastify log 的 volume 路徑</span></span><br><span class="line"></span><br><span class="line"><span class="attr">output.logstash:</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;logstash:5044&quot;</span>] <span class="comment"># 指向 logstash 容器</span></span><br></pre></td></tr></table></figure>
+
+<p>📄 logstash&#x2F;pipeline&#x2F;logstash.conf 範例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  beats &#123;</span><br><span class="line">    port =&gt; 5044</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">  json &#123;</span><br><span class="line">    source =&gt; &quot;message&quot;</span><br><span class="line">    skip_on_invalid_json =&gt; true</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; [&quot;http://elasticsearch:9200&quot;]</span><br><span class="line">    index =&gt; &quot;fastify-logs-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="啟用"><a href="#啟用" class="headerlink" title="啟用"></a>啟用</h2><p>建立完上述資料夾與設定檔後，執行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>然後開啟瀏覽器進入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:5601</span><br></pre></td></tr></table></figure>
+
+<p>到 Kibana 建立 index pattern，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastify-logs-*</span><br></pre></td></tr></table></figure>
+
+<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>🔍 查詢錯誤：type: api AND status: 500<br>🔎 篩選路徑：url: &#x2F;api&#x2F;v1&#x2F;auth&#x2F;login<br>📊 觀看圖表報表：</p>
+<ul>
+<li>Top 5 最常被打的 API</li>
+<li>status 401 的來源 IP 統計</li>
+<li>最近 30 分鐘錯誤數趨勢</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Kate Cheng
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://kk034kk034.github.io/2025/05/23/Hello-My-ELK-Stack/" title="Hello, My ELK Stack">https://kk034kk034.github.io/2025/05/23/Hello-My-ELK-Stack/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/log/" rel="tag"># log</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/05/17/Hello-My-API-Validation/" rel="prev" title="Hello, My API Validation">
+                  <i class="fa fa-angle-left"></i> Hello, My API Validation
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Kate Cheng</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

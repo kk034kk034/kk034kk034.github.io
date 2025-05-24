@@ -125,18 +125,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -161,6 +161,527 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/23/Hello-My-ELK-Stack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/23/Hello-My-ELK-Stack/" class="post-title-link" itemprop="url">Hello, My ELK Stack</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-05-23 21:39:56" itemprop="dateCreated datePublished" datetime="2025-05-23T21:39:56+08:00">2025-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-24 19:59:18" itemprop="dateModified" datetime="2025-05-24T19:59:18+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我不是維運工程師，但我希望自己開發的系統能夠：</p>
+<ol>
+<li>在用戶發現問題之前，先自己發現並處理  </li>
+<li>出錯時能快速排查，不靠 *.log 苦力 grep  </li>
+<li>平時能留下資料，未來好做統計與系統評估</li>
+</ol>
+<p>這篇文章會分享我怎麼將開源工具整合進我的系統：<br>使用 <strong>Filebeat、Logstash、Elasticsearch、Kibana</strong>（簡稱 ELK），快速搭出一套後端 log 監控架構。<br>不靠複雜 infra，全程用 Docker Compose 一鍵啟動。<br>📦 完整 docker-compose.yml 放這裡 👉 <a target="_blank" rel="noopener" href="https://github.com/kk034kk034/management-system/blob/main/dev-compose.yml">GitHub Repo</a></p>
+<h1 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h1><h2 id="架構概覽：Fastify-ELK-Flow"><a href="#架構概覽：Fastify-ELK-Flow" class="headerlink" title="架構概覽：Fastify + ELK Flow"></a>架構概覽：Fastify + ELK Flow</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Fastify（logs/*.log）</span><br><span class="line">  ↓</span><br><span class="line">Filebeat：收集 log，JSON native 支援佳</span><br><span class="line">  ↓</span><br><span class="line">Logstash：欄位分類、格式轉換、前處理</span><br><span class="line">  ↓</span><br><span class="line">Elasticsearch：儲存與查詢，支援自動分日索引</span><br><span class="line">  ↓</span><br><span class="line">Kibana：查詢 &amp; 圖表視覺化介面</span><br></pre></td></tr></table></figure>
+
+<h2 id="事前準備：Fastify-寫入-JSON-Log"><a href="#事前準備：Fastify-寫入-JSON-Log" class="headerlink" title="事前準備：Fastify 寫入 JSON Log"></a>事前準備：Fastify 寫入 JSON Log</h2><p>我在 Fastify 專案中使用 Winston，把每次 API 請求都記錄成 JSON 格式的 log 檔案，方便後續被 ELK 收集與分析。</p>
+<p>📁 log 檔案目錄範例如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/fastify_deploy/logs/</span><br><span class="line">├── api-access.log        <span class="comment"># 每筆 API 請求</span></span><br></pre></td></tr></table></figure>
+
+<p>📝 實際 log 範例（每行為一筆 JSON）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2025-05-23 08:15:24] INFO: &#123;&quot;timestamp&quot;:&quot;2025-05-23T08:15:24.215Z&quot;,&quot;method&quot;:&quot;POST&quot;,&quot;url&quot;:&quot;/api/v1/auth/login&quot;,&quot;status&quot;:200,&quot;duration&quot;:297,&quot;user_id&quot;:&quot;guest&quot;,&quot;ip&quot;:&quot;172.18.0.1&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="設定整合：讓-Log-自動進入-ELK"><a href="#設定整合：讓-Log-自動進入-ELK" class="headerlink" title="設定整合：讓 Log 自動進入 ELK"></a>設定整合：讓 Log 自動進入 ELK</h2><p>所有服務都跑在 Docker 容器中，而 Fastify 寫出的 log 則透過 volume 掛載到 Filebeat。(如 Repo 所示之 dev-compose.yml)<br>並在啟用前，建立ELK所需設定檔。(如下所示)</p>
+<p>📂 檔案結構（dev-compose.yml目錄下）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── filebeat/</span><br><span class="line">│   └── filebeat.yml <span class="comment"># 輸出設定</span></span><br><span class="line">├── logstash/</span><br><span class="line">│   └── pipeline/</span><br><span class="line">│       └── logstash.conf <span class="comment"># 解析規則</span></span><br></pre></td></tr></table></figure>
+
+<p>📄 filebeat&#x2F;filebeat.yml 範例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">filebeat.inputs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">log</span></span><br><span class="line">    <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/logs/*.log</span> <span class="comment"># 掛載 fastify log 的 volume 路徑</span></span><br><span class="line"></span><br><span class="line"><span class="attr">output.logstash:</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;logstash:5044&quot;</span>] <span class="comment"># 指向 logstash 容器</span></span><br></pre></td></tr></table></figure>
+
+<p>📄 logstash&#x2F;pipeline&#x2F;logstash.conf 範例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  beats &#123;</span><br><span class="line">    port =&gt; 5044</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">  json &#123;</span><br><span class="line">    source =&gt; &quot;message&quot;</span><br><span class="line">    skip_on_invalid_json =&gt; true</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; [&quot;http://elasticsearch:9200&quot;]</span><br><span class="line">    index =&gt; &quot;fastify-logs-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="啟用"><a href="#啟用" class="headerlink" title="啟用"></a>啟用</h2><p>建立完上述資料夾與設定檔後，執行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>然後開啟瀏覽器進入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:5601</span><br></pre></td></tr></table></figure>
+
+<p>到 Kibana 建立 index pattern，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastify-logs-*</span><br></pre></td></tr></table></figure>
+
+<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>🔍 查詢錯誤：type: api AND status: 500<br>🔎 篩選路徑：url: &#x2F;api&#x2F;v1&#x2F;auth&#x2F;login<br>📊 觀看圖表報表：</p>
+<ul>
+<li>Top 5 最常被打的 API</li>
+<li>status 401 的來源 IP 統計</li>
+<li>最近 30 分鐘錯誤數趨勢</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/17/Hello-My-API-Validation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/17/Hello-My-API-Validation/" class="post-title-link" itemprop="url">Hello, My API Validation</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-05-17 01:50:36" itemprop="dateCreated datePublished" datetime="2025-05-17T01:50:36+08:00">2025-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-24 19:59:18" itemprop="dateModified" datetime="2025-05-24T19:59:18+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/backend/" itemprop="url" rel="index"><span itemprop="name">backend</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="API-是最後防線，後端驗證不是加分項"><a href="#API-是最後防線，後端驗證不是加分項" class="headerlink" title="API 是最後防線，後端驗證不是加分項"></a>API 是最後防線，後端驗證不是加分項</h1><blockquote>
+<p>曾經我在 PR 裡加入了 MAC Address 與 Serial Number 的格式驗證，卻被視為「應該交由前端處理」而被移除。但後端驗證從來不是錦上添花，而是守住系統邏輯與安全底線的責任。</p>
+</blockquote>
+<p>在前後端分離的開發架構中，前端確實適合處理表單提示與使用者互動，但<strong>資料是否可信、格式是否正確，最終仍需由後端把關</strong>。這不只是風格問題，而是攸關資料正確性與系統安全的底線。</p>
+<h2 id="為什麼不能只靠前端驗證？"><a href="#為什麼不能只靠前端驗證？" class="headerlink" title="為什麼不能只靠前端驗證？"></a>為什麼不能只靠前端驗證？</h2><ul>
+<li><strong>攻擊者可繞過前端</strong>，直接對 API 發送請求，不受前端約束。</li>
+<li><strong>前端驗證容易遺漏</strong>，稍有改版就可能忘記檢查邊界狀況。</li>
+<li><strong>資料庫的品質與安全性</strong>，只能靠後端確保。</li>
+</ul>
+<p>不論你多信任使用者或自己的 UI，一旦 API 對外開放，所有輸入都應視為不可信，直到經過後端驗證為止。</p>
+<h2 id="常見卻易忽略的驗證需求"><a href="#常見卻易忽略的驗證需求" class="headerlink" title="常見卻易忽略的驗證需求"></a>常見卻易忽略的驗證需求</h2><table>
+<thead>
+<tr>
+<th>欄位類型</th>
+<th>常見問題</th>
+<th>建議處理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MAC Address</td>
+<td>大小寫混用、缺冒號、格式不符</td>
+<td>正規化格式、統一轉小寫</td>
+</tr>
+<tr>
+<td>Serial Number</td>
+<td>空白、特殊符號、長度不一</td>
+<td>去除多餘空白、限制長度與字元集</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>格式錯誤、大小寫比對錯誤</td>
+<td>標準格式驗證、轉小寫比對</td>
+</tr>
+<tr>
+<td>Phone Number</td>
+<td>國碼遺漏、格式不統一</td>
+<td>統一格式、清理非數字字元</td>
+</tr>
+<tr>
+<td>自由輸入文字</td>
+<td>可注入 <code>&lt;script&gt;</code> 等惡意內容</td>
+<td>過濾 HTML 標籤與特殊字元</td>
+</tr>
+<tr>
+<td>JSON 結構欄位</td>
+<td>欄位未定義、型別錯誤</td>
+<td>僅允許白名單欄位、進行深層驗證</td>
+</tr>
+<tr>
+<td>可變長欄位</td>
+<td>無長度限制、可被用來進行 DoS 攻擊</td>
+<td>設定合理最大長度</td>
+</tr>
+</tbody></table>
+<p>後端若不進行上述驗證，可能會導致資料一致性問題、系統崩潰、甚至資安事件。</p>
+<h2 id="格式驗證是後端的基本責任"><a href="#格式驗證是後端的基本責任" class="headerlink" title="格式驗證是後端的基本責任"></a>格式驗證是後端的基本責任</h2><p>有些人認為「後端只要處理業務邏輯，格式交給前端就好」，但這種分工方式忽略了一個事實：<strong>API 是唯一直接接觸資料庫的接口，也是攻擊者的主要進入點</strong>。</p>
+<p>後端若不主動驗證與保護，資料庫很快就會被寫滿錯誤、污染甚至惡意資料。屆時處理成本會比一開始做好驗證高上數倍。</p>
+<h2 id="結語：驗證不是「多做」，而是該做"><a href="#結語：驗證不是「多做」，而是該做" class="headerlink" title="結語：驗證不是「多做」，而是該做"></a>結語：驗證不是「多做」，而是該做</h2><p>後端驗證不是在跟前端搶工作，也不是完美主義者的堅持，而是為了讓系統穩定、安全、可維護。</p>
+<p>請不要再說「這應該交給前端處理」了。格式驗證、大小寫正規化、欄位清洗，<strong>本來就是後端應做的基本工事</strong>。既然 API 是最後一道防線，就該由後端守住，而不是放行。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/16/Hello-Respect-the-Flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/16/Hello-Respect-the-Flow/" class="post-title-link" itemprop="url">Hello, Respect the Flow</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-05-16 23:45:02" itemprop="dateCreated datePublished" datetime="2025-05-16T23:45:02+08:00">2025-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-24 19:59:18" itemprop="dateModified" datetime="2025-05-24T19:59:18+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>只要你還讓 Dev、Test、Staging 混在同一台機器上，就不會有真正可驗證的交付流程。</p>
+<p>測試會失效、整合會混亂、問題無法重現，所有角色彼此踩線，流程變成推責任的戰場。這不是 infra 的問題，而是團隊紀律的問題。</p>
+<p>Respect the flow 不是形式，而是一種責任感 —— 對於環境分層、版本凍結、角色邊界的基本尊重。</p>
+<hr>
+<h2 id="每個環境都有該扮演的角色"><a href="#每個環境都有該扮演的角色" class="headerlink" title="每個環境都有該扮演的角色"></a>每個環境都有該扮演的角色</h2><p>軟體開發流程中，常見的四個環境層級與實體建議如下：</p>
+<ul>
+<li><strong>Development</strong>：自由開發、頻繁變動（如在本地機器或 sandbox VM）</li>
+<li><strong>Testing</strong>：功能驗證、壓力測試（如地端共用測試主機）</li>
+<li><strong>Staging</strong>：驗收整合、模擬實際部署（如雲端與 Prod 同規格的 VM_1）</li>
+<li><strong>Production</strong>：穩定服務、對外公開（如雲端正式環境 VM_2）</li>
+</ul>
+<p>每個環境都應對應獨立部署單元或主機，避免如下常見錯誤：</p>
+<ul>
+<li>test server 被 RD-Team 當作開發環境直接使用</li>
+<li>staging server 被拿來跑 測試流程</li>
+<li>develop 分支還在 push，測試團隊已經在執行驗證</li>
+</ul>
+<p>一旦角色模糊，整個流程就會失去可追溯性與穩定性。</p>
+<hr>
+<h2 id="如果你不-freeze，下游就會-freeze-住"><a href="#如果你不-freeze，下游就會-freeze-住" class="headerlink" title="如果你不 freeze，下游就會 freeze 住"></a>如果你不 freeze，下游就會 freeze 住</h2><p>最典型的情況是：</p>
+<blockquote>
+<p>「前端 在串 test server 上的後端，突然工作被中斷，因為 API 斷線了，然後原本有些欄位一下出現又一下不見…因為後端還在那上面改寫。」</p>
+</blockquote>
+<blockquote>
+<p>「Test-Team 在 test server 上測試，突然 WEB 斷線了，然後原本有些按鈕功能一下出現又一下不見…因為前&#x2F;後端還在那上面改寫。」</p>
+</blockquote>
+<p>這會造成：</p>
+<ul>
+<li>前端 工作被中斷</li>
+<li>前端 整合反覆修改、重構</li>
+<li>測試人員 無法重現 bug、流程斷鏈</li>
+<li>測試結果無效，驗證版本與實際版本不一致</li>
+</ul>
+<p><strong>測試不是幫你 debug，而是驗證一個凍結版本能否穩定上線。</strong></p>
+<hr>
+<h2 id="測試是驗收場，Staging-是最後防線，不是跳板"><a href="#測試是驗收場，Staging-是最後防線，不是跳板" class="headerlink" title="測試是驗收場，Staging 是最後防線，不是跳板"></a>測試是驗收場，Staging 是最後防線，不是跳板</h2><p>測試環境的存在，是為了讓團隊能在明確版本的基礎上進行以下驗證行為：</p>
+<ul>
+<li>前端 對接穩定的 後端 (API &#x2F; Schema)</li>
+<li>Test-Team 驗證功能與流程正確性</li>
+<li>Test-Team 進行壓力測試、功能巡檢</li>
+<li>PM-Team 做出上線前的確認與取捨</li>
+</ul>
+<p>這些前提都建立在一個基本共識上：這台機器上的版本不會變。<br>一旦允許後端隨意 push、改資料結構或重啟服務，這個環境就失去了所有驗證意義。</p>
+<p>但光有 test server 還不夠 —— staging 應該存在，並且與 production 一致（或幾乎一致），讓團隊能在上線前模擬實戰，驗證部署流程與設定變數，找出遺漏與風險。</p>
+<p>如果沒有 staging，等於你是在開發測一半、就直接蓋上正式環境。這不叫快速交付，這叫賭博。</p>
+<p>test server 是為了驗證功能正確，<br>staging server 是為了驗證部署正確。</p>
+<p>兩者都不能省，否則你永遠不知道你測的是什麼、上的是什麼。</p>
+<hr>
+<h2 id="Respect-the-Flow，就是尊重邊界與責任"><a href="#Respect-the-Flow，就是尊重邊界與責任" class="headerlink" title="Respect the Flow，就是尊重邊界與責任"></a>Respect the Flow，就是尊重邊界與責任</h2><p>CI&#x2F;CD 再強大，也沒辦法替你維護流程紀律。<br>Git 分支再清晰，也撐不住你把所有環境塞在一台 VM 上亂部署。</p>
+<p>你可以開發得快，但你不能亂；<br>你可以 iterate 常常 push，但你不能 push 到別人腳下。</p>
+<p>一個乾淨的交付流程需要：</p>
+<ul>
+<li><strong>明確的環境邊界</strong>：dev、test、staging、prod 不可混用</li>
+<li><strong>固定的版本控制</strong>：release 分支一旦部署到 test，就不得更動</li>
+<li><strong>乾淨的部署紀律</strong>：不同環境對應不同 tag 或 commit</li>
+<li><strong>穩定的整合基礎</strong>：測試與前端整合皆依據可重現版本進行</li>
+</ul>
+<p>這些不是為了形式化流程，而是為了讓開發不會踩到測試、測試不會受制於開發、整合能放心進行、責任能夠明確釐清。</p>
+<hr>
+<h2 id="小結：流程是一種信任協議"><a href="#小結：流程是一種信任協議" class="headerlink" title="小結：流程是一種信任協議"></a>小結：流程是一種信任協議</h2><p>流程之所以重要，是因為它讓責任可追、溝通可簡、節奏可持續。</p>
+<p>你可以用最快速度開發，但不能讓這種速度成為其他人的成本。<br>Respect the Flow，代表你願意為「穩定的交付」負責，而不只是寫完一段功能就結束了。<br>這是工程紀律，也是職業態度。</p>
+<blockquote>
+<p>Respect the flow — don’t test on dev, don’t dev on test.</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/03/Hello-Backend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/03/Hello-Backend/" class="post-title-link" itemprop="url">Hello, Backend</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-05-03 18:06:12" itemprop="dateCreated datePublished" datetime="2025-05-03T18:06:12+08:00">2025-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-05-24 19:59:18" itemprop="dateModified" datetime="2025-05-24T19:59:18+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/backend/" itemprop="url" rel="index"><span itemprop="name">backend</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="使用-Fastify、Sequelize-和-JWT-實現-RBAC-權限管理"><a href="#使用-Fastify、Sequelize-和-JWT-實現-RBAC-權限管理" class="headerlink" title="使用 Fastify、Sequelize 和 JWT 實現 RBAC 權限管理"></a>使用 Fastify、Sequelize 和 JWT 實現 RBAC 權限管理</h1><p>在這篇文章中，我將分享如何使用 Fastify、Sequelize 和 JWT 搭建一個後端架構，並且通過 RBAC（基於角色的訪問控制） 來管理用戶的訪問權限。這些技術的組合讓我們能夠快速且安全地處理用戶身份認證與角色管理，並確保 API 的安全性。</p>
+<h1 id="為何選擇這些技術？"><a href="#為何選擇這些技術？" class="headerlink" title="為何選擇這些技術？"></a>為何選擇這些技術？</h1><ul>
+<li><p>Fastify：這是一個高效且易於擴展的 Node.js 框架，提供了強大的性能和極為簡單的 API 設計，能夠輕鬆應對高並發的請求。</p>
+</li>
+<li><p>Sequelize：作為一個強大的 ORM 工具，Sequelize 可以簡化與資料庫的交互，並且支持多種關聯型資料庫，適合用來處理用戶資料和角色資料。</p>
+</li>
+<li><p>JWT：JWT 是一種輕量級的身份驗證機制，可以在不同服務之間安全地傳遞用戶的身份信息，並且能夠實現無狀態的認證系統。</p>
+</li>
+</ul>
+<h1 id="如何實現-RBAC（基於角色的訪問控制）"><a href="#如何實現-RBAC（基於角色的訪問控制）" class="headerlink" title="如何實現 RBAC（基於角色的訪問控制）"></a>如何實現 RBAC（基於角色的訪問控制）</h1><ol>
+<li>設定資料模型<br>首先，我們需要設計 User 和 Role 模型，並使用 Sequelize 來管理這些資料。每個用戶都會被分配一個角色，角色則定義了用戶可以訪問的資源。</li>
+<li>設定角色和權限<br>我們使用 AccessControl 库來設定每個角色可以執行的操作。例如，groupViewer 角色只能讀取資料，而 groupManager 則擁有更多的操作權限。</li>
+<li>中間件：基於角色的授權<br>為了保證每個用戶只能訪問他們被授予權限的資源，我們在 Fastify 中創建了一個名為 authorize 的中間件，來進行每次請求的授權檢查。</li>
+<li>設定 JWT 認證<br>用戶登錄後，系統會發送一個 JWT 令牌，這個令牌會包含用戶的角色信息。在後續的 API 請求中，我們會驗證 JWT，並根據角色來授權。</li>
+</ol>
+<h1 id="使用-JWT-和-RBAC-進行授權操作"><a href="#使用-JWT-和-RBAC-進行授權操作" class="headerlink" title="使用 JWT 和 RBAC 進行授權操作"></a>使用 JWT 和 RBAC 進行授權操作</h1><p>一旦用戶成功登錄並獲得 JWT，後端可以根據用戶角色來授權操作。例如，讓 groupManager 角色的用戶將某個用戶分配到某個組織並賦予相應的角色。</p>
+<p>分配用戶到某個組織並賦予角色：<br>在這個 API 中，我們會驗證用戶的角色，然後根據角色授予其相應的權限。假設我們要實現將用戶分配到某個組織並賦予角色的功能，這樣的 API 需要確保只有 groupManager 和 groupAdmin 角色能夠進行此操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">fastify.<span class="title function_">post</span>(<span class="string">&#x27;/assign-user-role&#x27;</span>, &#123; <span class="attr">preValidation</span>: [fastify.<span class="title function_">authorize</span>(<span class="string">&#x27;createAny&#x27;</span>, <span class="string">&#x27;userRole&#x27;</span>)] &#125;, <span class="title function_">async</span> (request, reply) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; userId, organizationId, roleId &#125; = request.<span class="property">body</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 確認用戶是否已經存在</span></span><br><span class="line">  <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="title class_">User</span>.<span class="title function_">findByPk</span>(userId);</span><br><span class="line">  <span class="keyword">if</span> (!user) &#123;</span><br><span class="line">    <span class="keyword">return</span> reply.<span class="title function_">code</span>(<span class="number">404</span>).<span class="title function_">send</span>(&#123; <span class="attr">error</span>: <span class="string">&#x27;User not found&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 分配角色</span></span><br><span class="line">  <span class="keyword">const</span> userRole = <span class="keyword">await</span> <span class="title class_">UserRole</span>.<span class="title function_">create</span>(&#123;</span><br><span class="line">    <span class="attr">user_id</span>: userId,</span><br><span class="line">    <span class="attr">organization_id</span>: organizationId,</span><br><span class="line">    <span class="attr">role_id</span>: roleId</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> reply.<span class="title function_">code</span>(<span class="number">200</span>).<span class="title function_">send</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;User role assigned successfully&#x27;</span>, userRole &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h1><p>這篇文章介紹了如何使用 Fastify、Sequelize 和 JWT 實現一個帶有 RBAC（基於角色的訪問控制）的後端架構。通過簡單的程式範例，我們展示了如何設定角色和權限，並且使用 JWT 來進行用戶身份驗證和授權操作。這個架構簡單且高效，適合用於需要角色管理和精細化權限控制的應用。</p>
+<p>如果你有興趣查看具體的程式碼實現，可以前往我的 GitHub 相關專案：<a target="_blank" rel="noopener" href="https://github.com/kk034kk034/management-system">https://github.com/kk034kk034/management-system</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
