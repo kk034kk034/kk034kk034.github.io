@@ -125,18 +125,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -161,6 +161,144 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/24/Hello-My-GitHub-Flow/" class="post-title-link" itemprop="url">Hello, My GitHub Flow</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2025-05-24 21:18:12 / 修改時間：21:27:33" itemprop="dateCreated datePublished" datetime="2025-05-24T21:18:12+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/vcs/" itemprop="url" rel="index"><span itemprop="name">vcs</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="GitHub-Flow-教學：和開源作者使用同一套工作流程"><a href="#GitHub-Flow-教學：和開源作者使用同一套工作流程" class="headerlink" title="GitHub Flow 教學：和開源作者使用同一套工作流程"></a>GitHub Flow 教學：和開源作者使用同一套工作流程</h1><blockquote>
+<p>對我來說，GitHub Flow 不只是工具使用的技巧，而是一種「工程習慣」。這篇是我想推薦給每個工程師的版本控制基礎，無論你是獨立開發還是團隊合作，只要掌握這個流程，協作的效率和品質都能大幅提升。</p>
+</blockquote>
+<p>誠心推薦的教學影片：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=uj8hjLyEBmU">十分钟学会正确的 GitHub 工作流</a></p>
+<hr>
+<h2 id="🧭-為什麼要用-GitHub-Flow？"><a href="#🧭-為什麼要用-GitHub-Flow？" class="headerlink" title="🧭 為什麼要用 GitHub Flow？"></a>🧭 為什麼要用 GitHub Flow？</h2><p>因為「git commit -am ‘fix something’」直接推 main 的日子該結束了。這種做法不僅容易把壞 code 推上去，也讓團隊難以追蹤、回溯與協作。</p>
+<p>GitHub Flow 是一套非常實用的流程：</p>
+<ol>
+<li>為每個功能建立分支</li>
+<li>本地提交並推送到 GitHub</li>
+<li>與 main 分支保持同步（rebase）</li>
+<li>發起 Pull Request，進行 code review</li>
+<li>使用 squash and merge 合併</li>
+<li>刪除分支，保持倉庫整潔</li>
+</ol>
+<hr>
+<h2 id="🚧-建立功能分支"><a href="#🚧-建立功能分支" class="headerlink" title="🚧 建立功能分支"></a>🚧 建立功能分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<p>在 main 上開發是禁忌。先從 main 切出分支再動手，不管是新增功能還是修 Bug，都要獨立開發、獨立測試，這樣出問題才不會拖垮整個專案。</p>
+<hr>
+<h2 id="✏️-編輯、提交、檢查差異"><a href="#✏️-編輯、提交、檢查差異" class="headerlink" title="✏️ 編輯、提交、檢查差異"></a>✏️ 編輯、提交、檢查差異</h2><p>修改完代碼之後，記得：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;feat: add awesome update&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>養成 good commit message 的習慣，後面回頭看的時候會感謝自己。建議在提交前用 <code>git diff</code> 看一下，確保不小心加了 debug 或多餘的修改。</p>
+<hr>
+<h2 id="🔁-與-main-同步，保持乾淨提交歷史"><a href="#🔁-與-main-同步，保持乾淨提交歷史" class="headerlink" title="🔁 與 main 同步，保持乾淨提交歷史"></a>🔁 與 main 同步，保持乾淨提交歷史</h2><p>功能開發不會在真空中進行。main 分支的進度可能已經更新，我們要透過 rebase 整合最新的變更：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin</span><br><span class="line">git rebase origin/main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>rebase 會讓提交記錄保持線性，是 GitHub Flow 推薦的做法。若出現衝突，就手動解、<code>git rebase --continue</code>。</p>
+</blockquote>
+<hr>
+<h2 id="🚀-發起-Pull-Request（PR）"><a href="#🚀-發起-Pull-Request（PR）" class="headerlink" title="🚀 發起 Pull Request（PR）"></a>🚀 發起 Pull Request（PR）</h2><p>當功能開發完成後，推上 GitHub：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<p>進到 GitHub 倉庫，發起 Pull Request，指明要合併到 <code>main</code>。在 PR 裡可以：</p>
+<ul>
+<li>tag reviewer（協作者）</li>
+<li>解釋變更動機與內容</li>
+<li>附上截圖或測試方式</li>
+</ul>
+<hr>
+<h2 id="🧹-使用-Squash-and-Merge-合併"><a href="#🧹-使用-Squash-and-Merge-合併" class="headerlink" title="🧹 使用 Squash and Merge 合併"></a>🧹 使用 Squash and Merge 合併</h2><p>PR 通過後，請選擇 <strong>Squash and Merge</strong> 而不是 Merge commit：</p>
+<p>✅ 優點：</p>
+<ul>
+<li>合併進 main 時只留下 1 筆 commit，保持簡潔歷史</li>
+<li>雜亂的小 commit 不會污染主線</li>
+</ul>
+<p>合併後記得：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -d feature/awesome-update</span><br><span class="line">git push origin --delete feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="💡-小結：流程讓合作變得更順"><a href="#💡-小結：流程讓合作變得更順" class="headerlink" title="💡 小結：流程讓合作變得更順"></a>💡 小結：流程讓合作變得更順</h2><p>這套 GitHub Flow 不一定是唯一解，但對我來說，它解決了很多在協作中常見的狀況，例如：</p>
+<ul>
+<li>想回頭看一段功能是什麼時候加的、為什麼改，結果歷史一片「fix bug」、「try again」…</li>
+<li>一改就壓到別人的 code，才發現自己忘記先同步 main</li>
+<li>做完功能不知道怎麼合併、review 時搞不清楚邏輯變更在哪</li>
+</ul>
+<p>透過分支、rebase 和 PR review，把每次變更切得更清楚、有脈絡，也讓自己習慣在合併前檢查、思考與整理。</p>
+<p>如果你也曾遇過類似困擾，也許可以試試看這種做法，看看有沒有幫助。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

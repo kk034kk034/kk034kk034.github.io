@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kk034kk034.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="GitHub Flow 教學：和開源作者使用同一套工作流程 對我來說，GitHub Flow 不只是工具使用的技巧，而是一種「工程習慣」。這篇是我想推薦給每個工程師的版本控制基礎，無論你是獨立開發還是團隊合作，只要掌握這個流程，協作的效率和品質都能大幅提升。  誠心推薦的教學影片：十分钟学会正确的 GitHub 工作流  🧭 為什麼要用 GitHub Flow？因為「git commit -am">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hello, My GitHub Flow">
+<meta property="og:url" content="https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/index.html">
+<meta property="og:site_name" content="Kate&#39;s Blog">
+<meta property="og:description" content="GitHub Flow 教學：和開源作者使用同一套工作流程 對我來說，GitHub Flow 不只是工具使用的技巧，而是一種「工程習慣」。這篇是我想推薦給每個工程師的版本控制基礎，無論你是獨立開發還是團隊合作，只要掌握這個流程，協作的效率和品質都能大幅提升。  誠心推薦的教學影片：十分钟学会正确的 GitHub 工作流  🧭 為什麼要用 GitHub Flow？因為「git commit -am">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2025-05-24T13:18:12.000Z">
+<meta property="article:modified_time" content="2025-05-24T13:27:33.546Z">
+<meta property="article:author" content="Kate Cheng">
+<meta property="article:tag" content="github">
+<meta property="article:tag" content="workflow">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/","path":"2025/05/24/Hello-My-GitHub-Flow/","title":"Hello, My GitHub Flow"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Hello, My GitHub Flow | Kate's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Kate's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-Flow-%E6%95%99%E5%AD%B8%EF%BC%9A%E5%92%8C%E9%96%8B%E6%BA%90%E4%BD%9C%E8%80%85%E4%BD%BF%E7%94%A8%E5%90%8C%E4%B8%80%E5%A5%97%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">GitHub Flow 教學：和開源作者使用同一套工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%A7%AD-%E7%82%BA%E4%BB%80%E9%BA%BC%E8%A6%81%E7%94%A8-GitHub-Flow%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">🧭 為什麼要用 GitHub Flow？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%9A%A7-%E5%BB%BA%E7%AB%8B%E5%8A%9F%E8%83%BD%E5%88%86%E6%94%AF"><span class="nav-number">1.2.</span> <span class="nav-text">🚧 建立功能分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%9C%8F%EF%B8%8F-%E7%B7%A8%E8%BC%AF%E3%80%81%E6%8F%90%E4%BA%A4%E3%80%81%E6%AA%A2%E6%9F%A5%E5%B7%AE%E7%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">✏️ 編輯、提交、檢查差異</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%94%81-%E8%88%87-main-%E5%90%8C%E6%AD%A5%EF%BC%8C%E4%BF%9D%E6%8C%81%E4%B9%BE%E6%B7%A8%E6%8F%90%E4%BA%A4%E6%AD%B7%E5%8F%B2"><span class="nav-number">1.4.</span> <span class="nav-text">🔁 與 main 同步，保持乾淨提交歷史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%9A%80-%E7%99%BC%E8%B5%B7-Pull-Request%EF%BC%88PR%EF%BC%89"><span class="nav-number">1.5.</span> <span class="nav-text">🚀 發起 Pull Request（PR）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%A7%B9-%E4%BD%BF%E7%94%A8-Squash-and-Merge-%E5%90%88%E4%BD%B5"><span class="nav-number">1.6.</span> <span class="nav-text">🧹 使用 Squash and Merge 合併</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%92%A1-%E5%B0%8F%E7%B5%90%EF%BC%9A%E6%B5%81%E7%A8%8B%E8%AE%93%E5%90%88%E4%BD%9C%E8%AE%8A%E5%BE%97%E6%9B%B4%E9%A0%86"><span class="nav-number">1.7.</span> <span class="nav-text">💡 小結：流程讓合作變得更順</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kate Cheng"
+      src="/images/GGC02414-1.jpg">
+  <p class="site-author-name" itemprop="name">Kate Cheng</p>
+  <div class="site-description" itemprop="description">Work Lift Balance</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kk034kk034" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kk034kk034" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/kate-cheng-a8b94a189/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;kate-cheng-a8b94a189&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Hello, My GitHub Flow | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hello, My GitHub Flow
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2025-05-24 21:18:12 / 修改時間：21:27:33" itemprop="dateCreated datePublished" datetime="2025-05-24T21:18:12+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/vcs/" itemprop="url" rel="index"><span itemprop="name">vcs</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="GitHub-Flow-教學：和開源作者使用同一套工作流程"><a href="#GitHub-Flow-教學：和開源作者使用同一套工作流程" class="headerlink" title="GitHub Flow 教學：和開源作者使用同一套工作流程"></a>GitHub Flow 教學：和開源作者使用同一套工作流程</h1><blockquote>
+<p>對我來說，GitHub Flow 不只是工具使用的技巧，而是一種「工程習慣」。這篇是我想推薦給每個工程師的版本控制基礎，無論你是獨立開發還是團隊合作，只要掌握這個流程，協作的效率和品質都能大幅提升。</p>
+</blockquote>
+<p>誠心推薦的教學影片：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=uj8hjLyEBmU">十分钟学会正确的 GitHub 工作流</a></p>
+<hr>
+<h2 id="🧭-為什麼要用-GitHub-Flow？"><a href="#🧭-為什麼要用-GitHub-Flow？" class="headerlink" title="🧭 為什麼要用 GitHub Flow？"></a>🧭 為什麼要用 GitHub Flow？</h2><p>因為「git commit -am ‘fix something’」直接推 main 的日子該結束了。這種做法不僅容易把壞 code 推上去，也讓團隊難以追蹤、回溯與協作。</p>
+<p>GitHub Flow 是一套非常實用的流程：</p>
+<ol>
+<li>為每個功能建立分支</li>
+<li>本地提交並推送到 GitHub</li>
+<li>與 main 分支保持同步（rebase）</li>
+<li>發起 Pull Request，進行 code review</li>
+<li>使用 squash and merge 合併</li>
+<li>刪除分支，保持倉庫整潔</li>
+</ol>
+<hr>
+<h2 id="🚧-建立功能分支"><a href="#🚧-建立功能分支" class="headerlink" title="🚧 建立功能分支"></a>🚧 建立功能分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<p>在 main 上開發是禁忌。先從 main 切出分支再動手，不管是新增功能還是修 Bug，都要獨立開發、獨立測試，這樣出問題才不會拖垮整個專案。</p>
+<hr>
+<h2 id="✏️-編輯、提交、檢查差異"><a href="#✏️-編輯、提交、檢查差異" class="headerlink" title="✏️ 編輯、提交、檢查差異"></a>✏️ 編輯、提交、檢查差異</h2><p>修改完代碼之後，記得：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;feat: add awesome update&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>養成 good commit message 的習慣，後面回頭看的時候會感謝自己。建議在提交前用 <code>git diff</code> 看一下，確保不小心加了 debug 或多餘的修改。</p>
+<hr>
+<h2 id="🔁-與-main-同步，保持乾淨提交歷史"><a href="#🔁-與-main-同步，保持乾淨提交歷史" class="headerlink" title="🔁 與 main 同步，保持乾淨提交歷史"></a>🔁 與 main 同步，保持乾淨提交歷史</h2><p>功能開發不會在真空中進行。main 分支的進度可能已經更新，我們要透過 rebase 整合最新的變更：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin</span><br><span class="line">git rebase origin/main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>rebase 會讓提交記錄保持線性，是 GitHub Flow 推薦的做法。若出現衝突，就手動解、<code>git rebase --continue</code>。</p>
+</blockquote>
+<hr>
+<h2 id="🚀-發起-Pull-Request（PR）"><a href="#🚀-發起-Pull-Request（PR）" class="headerlink" title="🚀 發起 Pull Request（PR）"></a>🚀 發起 Pull Request（PR）</h2><p>當功能開發完成後，推上 GitHub：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<p>進到 GitHub 倉庫，發起 Pull Request，指明要合併到 <code>main</code>。在 PR 裡可以：</p>
+<ul>
+<li>tag reviewer（協作者）</li>
+<li>解釋變更動機與內容</li>
+<li>附上截圖或測試方式</li>
+</ul>
+<hr>
+<h2 id="🧹-使用-Squash-and-Merge-合併"><a href="#🧹-使用-Squash-and-Merge-合併" class="headerlink" title="🧹 使用 Squash and Merge 合併"></a>🧹 使用 Squash and Merge 合併</h2><p>PR 通過後，請選擇 <strong>Squash and Merge</strong> 而不是 Merge commit：</p>
+<p>✅ 優點：</p>
+<ul>
+<li>合併進 main 時只留下 1 筆 commit，保持簡潔歷史</li>
+<li>雜亂的小 commit 不會污染主線</li>
+</ul>
+<p>合併後記得：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -d feature/awesome-update</span><br><span class="line">git push origin --delete feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="💡-小結：流程讓合作變得更順"><a href="#💡-小結：流程讓合作變得更順" class="headerlink" title="💡 小結：流程讓合作變得更順"></a>💡 小結：流程讓合作變得更順</h2><p>這套 GitHub Flow 不一定是唯一解，但對我來說，它解決了很多在協作中常見的狀況，例如：</p>
+<ul>
+<li>想回頭看一段功能是什麼時候加的、為什麼改，結果歷史一片「fix bug」、「try again」…</li>
+<li>一改就壓到別人的 code，才發現自己忘記先同步 main</li>
+<li>做完功能不知道怎麼合併、review 時搞不清楚邏輯變更在哪</li>
+</ul>
+<p>透過分支、rebase 和 PR review，把每次變更切得更清楚、有脈絡，也讓自己習慣在合併前檢查、思考與整理。</p>
+<p>如果你也曾遇過類似困擾，也許可以試試看這種做法，看看有沒有幫助。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Kate Cheng
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/" title="Hello, My GitHub Flow">https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/github/" rel="tag"># github</a>
+              <a href="/tags/workflow/" rel="tag"># workflow</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/05/23/Hello-My-ELK-Stack/" rel="prev" title="Hello, My ELK Stack">
+                  <i class="fa fa-angle-left"></i> Hello, My ELK Stack
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Kate Cheng</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
