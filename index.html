@@ -136,7 +136,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -201,6 +201,22 @@
 
       <time title="創建時間：2025-06-17 22:27:34" itemprop="dateCreated datePublished" datetime="2025-06-17T22:27:34+08:00">2025-06-17</time>
     </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-11-06 22:59:22" itemprop="dateModified" datetime="2025-11-06T22:59:22+08:00">2025-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
 
   
 </div>
@@ -212,7 +228,57 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h1 id="用-Gitea-Actions-打造你的-CI-CD-自動化流程-🚀"><a href="#用-Gitea-Actions-打造你的-CI-CD-自動化流程-🚀" class="headerlink" title="用 Gitea Actions 打造你的 CI&#x2F;CD 自動化流程 🚀"></a>用 Gitea Actions 打造你的 CI&#x2F;CD 自動化流程 🚀</h1><blockquote>
+<p>這篇文章將帶你一步步用 Gitea Actions 打造自己的自動部署流程，從安裝 Runner 到實作 workflow，不只是跑測試，還能部署 Docker 應用。</p>
+</blockquote>
+<h2 id="為什麼選-Gitea-Actions？🤔"><a href="#為什麼選-Gitea-Actions？🤔" class="headerlink" title="為什麼選 Gitea Actions？🤔"></a>為什麼選 Gitea Actions？🤔</h2><p>我選擇它的幾個原因：</p>
+<ul>
+<li>✅ 自架、開源、輕量，不依賴 GitHub.com</li>
+<li>✅ 支援 GitHub Actions 的語法，相容度高</li>
+<li>✅ 跟 Gitea repository 整合超順，原生支援 PR trigger</li>
+<li>✅ 社群活躍，仍持續更新（2025 年開始加入 matrix 策略等進階特性）</li>
+</ul>
+<h2 id="前置準備-🧰"><a href="#前置準備-🧰" class="headerlink" title="前置準備 🧰"></a>前置準備 🧰</h2><h3 id="1️⃣-安裝-Gitea-Actions-Runner"><a href="#1️⃣-安裝-Gitea-Actions-Runner" class="headerlink" title="1️⃣ 安裝 Gitea Actions Runner"></a>1️⃣ 安裝 Gitea Actions Runner</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -s https://dl.gitea.com/act_runner/latest | bash</span><br><span class="line"><span class="built_in">chmod</span> +x act_runner</span><br><span class="line">./act_runner register</span><br></pre></td></tr></table></figure>
+
+<p>註冊過程會問你 Gitea server 的網址、Access Token、repository 等資訊。完成後會自動產生 ~&#x2F;.act_runner&#x2F; 配置檔，然後就能啟動 runner：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./act_runner daemon &amp;</span><br></pre></td></tr></table></figure>
+
+<p>📌 避坑提醒：</p>
+<ul>
+<li><p>Token 必須有 actions:write 權限</p>
+</li>
+<li><p>如果你是 root 使用者安裝，請留意目錄權限問題，建議建立專用 ciuser</p>
+</li>
+</ul>
+<h2 id="設定-CI-CD-工作流程（workflow）"><a href="#設定-CI-CD-工作流程（workflow）" class="headerlink" title="設定 CI&#x2F;CD 工作流程（workflow）"></a>設定 CI&#x2F;CD 工作流程（workflow）</h2><p>在你的 repository 裡建立 .gitea&#x2F;workflows&#x2F;ci.yml：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Build</span> <span class="string">and</span> <span class="string">Deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">main</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">Code</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Run</span> <span class="string">Unit</span> <span class="string">Test</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          npm install</span></span><br><span class="line"><span class="string">          npm test</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">  <span class="attr">deploy:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">build</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">via</span> <span class="string">Docker</span> <span class="string">Compose</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">docker</span> <span class="string">compose</span> <span class="string">-f</span> <span class="string">docker-compose.prod.yml</span> <span class="string">up</span> <span class="string">-d</span> <span class="string">--build</span></span><br></pre></td></tr></table></figure>
+
+<p>✅ 這段流程做了三件事：</p>
+<ol>
+<li>Pull 你的程式碼</li>
+<li>安裝與執行測試</li>
+<li>測試通過後，自動部署 Docker 版本到正式機</li>
+</ol>
+<h2 id="配合-env-與-Volume-管理你的部署設定"><a href="#配合-env-與-Volume-管理你的部署設定" class="headerlink" title="配合 .env 與 Volume 管理你的部署設定"></a>配合 .env 與 Volume 管理你的部署設定</h2><p>我會這樣設計 docker-compose.prod.yml：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myapp:latest</span></span><br><span class="line">    <span class="attr">env_file:</span> <span class="string">.env.prod</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:3000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data:/app/data</span></span><br></pre></td></tr></table></figure>
+
+<p>📌 實務建議：</p>
+<ul>
+<li>使用 .env.prod 分離環境參數</li>
+<li>將部署流程分開維護（ci.yml 不要直接包含敏感參數）</li>
+</ul>
+<h2 id="實戰部署與整合體驗"><a href="#實戰部署與整合體驗" class="headerlink" title="實戰部署與整合體驗"></a>實戰部署與整合體驗</h2><p>我把這套流程整合進我自己的專案後，每次 push 到 main 分支，就會：</p>
+<ul>
+<li>自動執行測試</li>
+<li>成功後觸發部署</li>
+<li>若失敗則不更新正式環境（避免髒 build）</li>
+</ul>
+<p>🚨 避坑提醒：</p>
+<ul>
+<li>若你在 deploy 階段用了 docker compose down &amp;&amp; up，要確保 volume 資料別被砍掉！</li>
+<li>測試與正式機若共用 Runner，記得使用 –project-name 隔離工作目錄</li>
+</ul>
+
       
     </div>
 
