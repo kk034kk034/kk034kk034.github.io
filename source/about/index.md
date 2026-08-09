@@ -11,7 +11,8 @@ type: "page"
 -  國立東華大學 電機工程學士 畢業
 
 # 工作經驗
-- Software Engineer @ PLANET
+- Deputy Supervisor @ PLANET
+- Senior Engineer @ PLANET
 - Python Engineer & Management Associate @ LEARNIK
 - CEO & Founder @ LABELa.
 - Software Engineer @ GIGABYTE

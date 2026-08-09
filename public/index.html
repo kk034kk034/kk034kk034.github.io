@@ -125,18 +125,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -161,6 +161,261 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/06/17/Hello-Gitea-Action-and-CI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/17/Hello-Gitea-Action-and-CI/" class="post-title-link" itemprop="url">Hello, Gitea-Action-and-CI</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2025-06-17 22:27:34" itemprop="dateCreated datePublished" datetime="2025-06-17T22:27:34+08:00">2025-06-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2025-11-06 22:59:22" itemprop="dateModified" datetime="2025-11-06T22:59:22+08:00">2025-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="用-Gitea-Actions-打造你的-CI-CD-自動化流程-🚀"><a href="#用-Gitea-Actions-打造你的-CI-CD-自動化流程-🚀" class="headerlink" title="用 Gitea Actions 打造你的 CI&#x2F;CD 自動化流程 🚀"></a>用 Gitea Actions 打造你的 CI&#x2F;CD 自動化流程 🚀</h1><blockquote>
+<p>這篇文章將帶你一步步用 Gitea Actions 打造自己的自動部署流程，從安裝 Runner 到實作 workflow，不只是跑測試，還能部署 Docker 應用。</p>
+</blockquote>
+<h2 id="為什麼選-Gitea-Actions？🤔"><a href="#為什麼選-Gitea-Actions？🤔" class="headerlink" title="為什麼選 Gitea Actions？🤔"></a>為什麼選 Gitea Actions？🤔</h2><p>我選擇它的幾個原因：</p>
+<ul>
+<li>✅ 自架、開源、輕量，不依賴 GitHub.com</li>
+<li>✅ 支援 GitHub Actions 的語法，相容度高</li>
+<li>✅ 跟 Gitea repository 整合超順，原生支援 PR trigger</li>
+<li>✅ 社群活躍，仍持續更新（2025 年開始加入 matrix 策略等進階特性）</li>
+</ul>
+<h2 id="前置準備-🧰"><a href="#前置準備-🧰" class="headerlink" title="前置準備 🧰"></a>前置準備 🧰</h2><h3 id="1️⃣-安裝-Gitea-Actions-Runner"><a href="#1️⃣-安裝-Gitea-Actions-Runner" class="headerlink" title="1️⃣ 安裝 Gitea Actions Runner"></a>1️⃣ 安裝 Gitea Actions Runner</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -s https://dl.gitea.com/act_runner/latest | bash</span><br><span class="line"><span class="built_in">chmod</span> +x act_runner</span><br><span class="line">./act_runner register</span><br></pre></td></tr></table></figure>
+
+<p>註冊過程會問你 Gitea server 的網址、Access Token、repository 等資訊。完成後會自動產生 ~&#x2F;.act_runner&#x2F; 配置檔，然後就能啟動 runner：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./act_runner daemon &amp;</span><br></pre></td></tr></table></figure>
+
+<p>📌 避坑提醒：</p>
+<ul>
+<li><p>Token 必須有 actions:write 權限</p>
+</li>
+<li><p>如果你是 root 使用者安裝，請留意目錄權限問題，建議建立專用 ciuser</p>
+</li>
+</ul>
+<h2 id="設定-CI-CD-工作流程（workflow）"><a href="#設定-CI-CD-工作流程（workflow）" class="headerlink" title="設定 CI&#x2F;CD 工作流程（workflow）"></a>設定 CI&#x2F;CD 工作流程（workflow）</h2><p>在你的 repository 裡建立 .gitea&#x2F;workflows&#x2F;ci.yml：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Build</span> <span class="string">and</span> <span class="string">Deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">main</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">Code</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Run</span> <span class="string">Unit</span> <span class="string">Test</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          npm install</span></span><br><span class="line"><span class="string">          npm test</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">  <span class="attr">deploy:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">build</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">via</span> <span class="string">Docker</span> <span class="string">Compose</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">docker</span> <span class="string">compose</span> <span class="string">-f</span> <span class="string">docker-compose.prod.yml</span> <span class="string">up</span> <span class="string">-d</span> <span class="string">--build</span></span><br></pre></td></tr></table></figure>
+
+<p>✅ 這段流程做了三件事：</p>
+<ol>
+<li>Pull 你的程式碼</li>
+<li>安裝與執行測試</li>
+<li>測試通過後，自動部署 Docker 版本到正式機</li>
+</ol>
+<h2 id="配合-env-與-Volume-管理你的部署設定"><a href="#配合-env-與-Volume-管理你的部署設定" class="headerlink" title="配合 .env 與 Volume 管理你的部署設定"></a>配合 .env 與 Volume 管理你的部署設定</h2><p>我會這樣設計 docker-compose.prod.yml：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myapp:latest</span></span><br><span class="line">    <span class="attr">env_file:</span> <span class="string">.env.prod</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:3000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data:/app/data</span></span><br></pre></td></tr></table></figure>
+
+<p>📌 實務建議：</p>
+<ul>
+<li>使用 .env.prod 分離環境參數</li>
+<li>將部署流程分開維護（ci.yml 不要直接包含敏感參數）</li>
+</ul>
+<h2 id="實戰部署與整合體驗"><a href="#實戰部署與整合體驗" class="headerlink" title="實戰部署與整合體驗"></a>實戰部署與整合體驗</h2><p>我把這套流程整合進我自己的專案後，每次 push 到 main 分支，就會：</p>
+<ul>
+<li>自動執行測試</li>
+<li>成功後觸發部署</li>
+<li>若失敗則不更新正式環境（避免髒 build）</li>
+</ul>
+<p>🚨 避坑提醒：</p>
+<ul>
+<li>若你在 deploy 階段用了 docker compose down &amp;&amp; up，要確保 volume 資料別被砍掉！</li>
+<li>測試與正式機若共用 Runner，記得使用 –project-name 隔離工作目錄</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2025/05/24/Hello-My-GitHub-Flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/24/Hello-My-GitHub-Flow/" class="post-title-link" itemprop="url">Hello, My GitHub Flow</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2025-05-24 21:18:12 / 修改時間：21:55:14" itemprop="dateCreated datePublished" datetime="2025-05-24T21:18:12+08:00">2025-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/vcs/" itemprop="url" rel="index"><span itemprop="name">vcs</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="如何在社群上和大神合作"><a href="#如何在社群上和大神合作" class="headerlink" title="如何在社群上和大神合作?"></a>如何在社群上和大神合作?</h1><blockquote>
+<p>我自己在寫 side project 或是參與多人協作時，發現了 GitHub Flow 的重要性。它讓我在處理分支、同步進度、合併改動時比較不容易踩雷。</p>
+</blockquote>
+<p>誠心推薦的教學影片：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=uj8hjLyEBmU">十分钟学会正确的 GitHub 工作流</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>GitHub Flow 是一套非常實用的流程：</p>
+<ol>
+<li>為每個功能建立分支</li>
+<li>本地提交並推送到 GitHub</li>
+<li>與 main 分支保持同步（rebase）</li>
+<li>發起 Pull Request，進行 code review</li>
+<li>使用 squash and merge 合併</li>
+<li>刪除分支，保持倉庫整潔</li>
+</ol>
+<h2 id="步驟一-建立功能分支"><a href="#步驟一-建立功能分支" class="headerlink" title="步驟一: 建立功能分支"></a>步驟一: 建立功能分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<p>在 main 上開發是禁忌。先從 main 切出分支再動手，不管是新增功能還是修 Bug，都要獨立開發、獨立測試，這樣出問題才不會拖垮整個專案。</p>
+<h2 id="步驟二-編輯、提交、檢查差異"><a href="#步驟二-編輯、提交、檢查差異" class="headerlink" title="步驟二: 編輯、提交、檢查差異"></a>步驟二: 編輯、提交、檢查差異</h2><p>修改完代碼之後，記得：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;feat: add awesome update&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>養成 good commit message 的習慣，後面回頭看的時候會感謝自己。建議在提交前用 <code>git diff</code> 看一下，確保不小心加了 debug 或多餘的修改。</p>
+<h2 id="步驟三-與-main-同步，保持乾淨提交歷史"><a href="#步驟三-與-main-同步，保持乾淨提交歷史" class="headerlink" title="步驟三: 與 main 同步，保持乾淨提交歷史"></a>步驟三: 與 main 同步，保持乾淨提交歷史</h2><p>功能開發不會在真空中進行。main 分支的進度可能已經更新，我們要透過 rebase 整合最新的變更：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin</span><br><span class="line">git rebase origin/main</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>rebase 會讓提交記錄保持線性，是 GitHub Flow 推薦的做法。若出現衝突，就手動解、<code>git rebase --continue</code>。</p>
+</blockquote>
+<h2 id="步驟四-發起-Pull-Request（PR）"><a href="#步驟四-發起-Pull-Request（PR）" class="headerlink" title="步驟四: 發起 Pull Request（PR）"></a>步驟四: 發起 Pull Request（PR）</h2><p>當功能開發完成後，推上 GitHub：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+<p>進到 GitHub 倉庫，發起 Pull Request，指明要合併到 <code>main</code>。在 PR 裡可以：</p>
+<ul>
+<li>tag reviewer（協作者）</li>
+<li>解釋變更動機與內容</li>
+<li>附上截圖或測試方式</li>
+</ul>
+<h2 id="步驟五-使用-Squash-and-Merge-合併"><a href="#步驟五-使用-Squash-and-Merge-合併" class="headerlink" title="步驟五: 使用 Squash and Merge 合併"></a>步驟五: 使用 Squash and Merge 合併</h2><p>PR 通過後，請選擇 <strong>Squash and Merge</strong> 而不是 Merge commit：</p>
+<p>✅ 優點：</p>
+<ul>
+<li>合併進 main 時只留下 1 筆 commit，保持簡潔歷史</li>
+<li>雜亂的小 commit 不會污染主線</li>
+</ul>
+<p>合併後記得：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -d feature/awesome-update</span><br><span class="line">git push origin --delete feature/awesome-update</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -727,7 +982,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-05-24 20:32:17" itemprop="dateModified" datetime="2025-05-24T20:32:17+08:00">2025-05-24</time>
+      <time title="修改時間：2025-05-24 21:05:41" itemprop="dateModified" datetime="2025-05-24T21:05:41+08:00">2025-05-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -838,7 +1093,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-05-24 20:32:17" itemprop="dateModified" datetime="2025-05-24T20:32:17+08:00">2025-05-24</time>
+      <time title="修改時間：2025-05-24 21:05:41" itemprop="dateModified" datetime="2025-05-24T21:05:41+08:00">2025-05-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1015,7 +1270,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-05-24 20:32:17" itemprop="dateModified" datetime="2025-05-24T20:32:17+08:00">2025-05-24</time>
+      <time title="修改時間：2025-05-24 21:05:41" itemprop="dateModified" datetime="2025-05-24T21:05:41+08:00">2025-05-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1200,7 +1455,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-05-24 20:32:17" itemprop="dateModified" datetime="2025-05-24T20:32:17+08:00">2025-05-24</time>
+      <time title="修改時間：2025-05-24 21:05:41" itemprop="dateModified" datetime="2025-05-24T21:05:41+08:00">2025-05-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1264,140 +1519,9 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2024/07/25/Hello-Github-Hexo-NexT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/GGC02414-1.jpg">
-      <meta itemprop="name" content="Kate Cheng">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Kate's Blog">
-      <meta itemprop="description" content="Work Lift Balance">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Kate's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/07/25/Hello-Github-Hexo-NexT/" class="post-title-link" itemprop="url">Hello, Github-Hexo-NexT</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2024-07-25 11:31:52" itemprop="dateCreated datePublished" datetime="2024-07-25T11:31:52+08:00">2024-07-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2025-05-24 20:32:17" itemprop="dateModified" datetime="2025-05-24T20:32:17+08:00">2025-05-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/build/" itemprop="url" rel="index"><span itemprop="name">build</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Needs"><a href="#Needs" class="headerlink" title="Needs"></a>Needs</h1><p>&#x3D;&#x3D;Github Page + Hexo框架 + NexT主題&#x3D;&#x3D;</p>
-<ul>
-<li>Free</li>
-<li>Own Blog</li>
-<li>Easy Use</li>
-<li>Flexibility</li>
-</ul>
-<h1 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h1><h2 id="Github-Page"><a href="#Github-Page" class="headerlink" title="Github Page"></a>Github Page</h2><ol>
-<li>先有一個Github帳號</li>
-<li>去新增專案(New repository)</li>
-<li>repository name必填為”your_github_name.github.io”</li>
-<li>設定完成後，進入”<a target="_blank" rel="noopener" href="https://your_github_name.github.io/">https://your_github_name.github.io/</a>“ 頁面就是屬於你的網頁了！</li>
-</ol>
-<h2 id="Hexo框架"><a href="#Hexo框架" class="headerlink" title="Hexo框架"></a>Hexo框架</h2><ol>
-<li>windows系統的電腦直接安裝<a target="_blank" rel="noopener" href="https://nodejs.org/en">Node.js</a></li>
-<li>就可以cmd下<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli <span class="comment"># 安裝hexo框架</span></span><br><span class="line">hexo init blog <span class="comment">#在當前目錄建立一個blog資料夾</span></span><br></pre></td></tr></table></figure></li>
-<li>把blog裡面的檔案全部複製到你剛建的git local repo</li>
-<li>就可以cmd下<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install <span class="comment">#根據&quot;package.json&quot;自動安裝需要的套件</span></span><br></pre></td></tr></table></figure></li>
-<li>為了快速先看到有東西，必須先對”_config.yml”其中三部分做基本修改，以下為我的範例config<br> 5-1. # Site <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">title: Kate&#x27;s Blog</span><br><span class="line">subtitle: &#x27;subtitle&#x27;</span><br><span class="line">description: &#x27;description&#x27;</span><br><span class="line">keywords:</span><br><span class="line">author: Kate Cheng</span><br><span class="line">language: zh-TW</span><br><span class="line">timezone: &#x27;Asia/Taipei&#x27;</span><br></pre></td></tr></table></figure>
- 5-2. # URL <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span><br><span class="line">url: https://kk034kk034.github.io/</span><br><span class="line">root: /</span><br><span class="line">permalink: :year/:month/:day/:title/</span><br><span class="line">permalink_defaults:</span><br><span class="line">pretty_urls:</span><br><span class="line">  trailing_index: true # Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span><br><span class="line">  trailing_html: true # Set to false to remove trailing &#x27;.html&#x27; from permalinks</span><br></pre></td></tr></table></figure>
- 5-3. # Deployment <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">## Docs: https://hexo.io/docs/one-command-deployment</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/kk034kk034/kk034kk034.github.io.git</span><br><span class="line">  branch: main</span><br></pre></td></tr></table></figure></li>
-<li>就可以cmd下以下指令部屬看結果~<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo clean <span class="comment">#將目前資料夾中的所有靜態網頁清除</span></span><br><span class="line">hexo generate <span class="comment">#或hexo g，</span></span><br><span class="line">hexo server <span class="comment">#會部屬在本地(127.0.0.1:4000)，用來確認當前設計</span></span><br><span class="line">hexo deploy <span class="comment">#或hexo d，將本地靜態網頁自動部屬到Git Page，所以5-3的部分要設定正確</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="NexT主題"><a href="#NexT主題" class="headerlink" title="NexT主題"></a>NexT主題</h2><ol>
-<li>尋找自己喜歡的<a target="_blank" rel="noopener" href="https://hexo.io/themes/?source=post_page-----4d295ed96236--------------------------------">Hexo Themes</a></li>
-<li>我最後是裝<a target="_blank" rel="noopener" href="https://github.com/next-theme/hexo-theme-next">NexT主題</a><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></li>
-<li>並修改”_config.yml”的<code>theme: next</code></li>
-<li>接下來就都是”themes&#x2F;next&#x2F;_config.yml”的事了，以下為我的範例config<br> 4-1. # Schemes <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scheme: Gemini</span><br></pre></td></tr></table></figure>
- 4-2. # Dark Mode <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">darkmode: true</span><br></pre></td></tr></table></figure>
- 4-3. # Menu Settings <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || home</span><br><span class="line">  about: /about/ || user</span><br><span class="line">  tags: /tags/ || tags</span><br><span class="line">  categories: /categories/ || th</span><br><span class="line">  archives: /archives/ || archive</span><br></pre></td></tr></table></figure>
- 4-4. # Sidebar Avatar <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">avatar:</span><br><span class="line">  # Replace the default image and set the url here.</span><br><span class="line">  url: /images/GGC02414-1.jpg</span><br><span class="line">  # If true, the avatar will be displayed in circle.</span><br><span class="line">  rounded: false</span><br><span class="line">  # If true, the avatar will be rotated with the cursor.</span><br><span class="line">  rotated: false</span><br></pre></td></tr></table></figure>
- 4-5. # Social Links <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">social:</span><br><span class="line">  GitHub: https://github.com/kk034kk034 || fab fa-github</span><br><span class="line">  LinkedIn: https://www.linkedin.com/in/kate-cheng-a8b94a189/ || fab fa-linkedin</span><br></pre></td></tr></table></figure></li>
-<li>其中，about、tags、categories，要用hexo指令額外建Page點進去才會有東西<br> 5-1. 增加”關於” <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
- 接著修改剛剛產生的 source&#x2F;about&#x2F;inex.md 成下面的樣子並儲存。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: about</span><br><span class="line">date: 2024-07-25 01:34:24</span><br><span class="line">type: &quot;page&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
- 5-2. 增加”標籤” <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
- 接著修改剛剛產生的 source&#x2F;tags&#x2F;inex.md 成下面的樣子並儲存。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: tags</span><br><span class="line">date: 2024-07-25 04:02:34</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
- 5-3. 增加”分類” <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
- 接著修改剛剛產生的 source&#x2F;categories&#x2F;inex.md 成下面的樣子並儲存。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2024-07-25 04:01:49</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure></li>
-<li>最後就是可以開始寫文章以及使用分類、標籤功能啦<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post <span class="string">&quot;Hello, Github-Hexo-NexT&quot;</span></span><br></pre></td></tr></table></figure>
-接著在剛剛產生的 source&#x2F;_posts&#x2F;Hello-Github-Hexo-NexT.md 頭部增加”categories:”與”tags:”範例如下，就可以開始用MarkDown語法寫文章啦!</li>
-</ol>
-<pre><code>---
-title: Hello, Github-Hexo-NexT
-date: 2024-07-25 11:31:52
-categories:
-    - build
-tags:
-    - blog
----
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" title="下一頁" aria-label="下一頁" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
 
 </div>
   </main>
