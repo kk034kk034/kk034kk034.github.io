@@ -1,0 +1,40 @@
+# NexT 主題的個人化設定（Alternate Theme Config）
+# 這個檔案會覆蓋 themes/next/_config.yml 的預設值，且屬於版控範圍，
+# 因此換電腦重新 clone 主題後，這些設定仍會保留。
+# 之後若在主題裡調整了新設定，請把「有改動的項目」也補到這裡。
+
+# Scheme（版面配置）
+scheme: Gemini
+
+# Dark Mode
+darkmode: true
+
+# Menu Settings
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+
+menu_settings:
+  icons: true
+  badges: false
+
+# Sidebar Avatar
+avatar:
+  url: /images/GGC02414-1.jpg
+  rounded: false
+  rotated: false
+
+# Posts / Categories / Tags in sidebar.
+site_state: true
+
+# Social Links
+social:
+  GitHub: https://github.com/kk034kk034 || fab fa-github
+  LinkedIn: https://www.linkedin.com/in/kate-cheng-a8b94a189/ || fab fa-linkedin
+
+social_icons:
+  enable: true
+  icons_only: false
