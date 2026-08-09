@@ -38,3 +38,12 @@ social:
 social_icons:
   enable: true
   icons_only: false
+
+# Creative Commons 授權標示
+creative_commons:
+  post: true
+  language: deed.zh_TW
+
+# 訪客 / 瀏覽次數統計（busuanzi）
+busuanzi_count:
+  enable: true
