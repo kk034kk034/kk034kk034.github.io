@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"kk034kk034.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="企業級系統上線：從 Infra 到壓力測試的實戰筆記大型專案最難的，往往不是把功能做出來，而是把已經在跑的舊系統，在客戶要求不中斷服務的前提下，換成新系統。 我平常寫的是應用，不是專職 Infra。只是做事偏一條龍，待過的又多是系統整合型團隊，主機、備援、資安、壓測、上線移轉自然都會碰到。這篇把那一段經驗收成一份筆記。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hello, My Enterprise Cutover">
+<meta property="og:url" content="https://kk034kk034.github.io/2026/08/10/Hello-My-Enterprise-Cutover/index.html">
+<meta property="og:site_name" content="Kate&#39;s Blog">
+<meta property="og:description" content="企業級系統上線：從 Infra 到壓力測試的實戰筆記大型專案最難的，往往不是把功能做出來，而是把已經在跑的舊系統，在客戶要求不中斷服務的前提下，換成新系統。 我平常寫的是應用，不是專職 Infra。只是做事偏一條龍，待過的又多是系統整合型團隊，主機、備援、資安、壓測、上線移轉自然都會碰到。這篇把那一段經驗收成一份筆記。">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2026-08-10T03:30:00.000Z">
+<meta property="article:modified_time" content="2026-08-10T04:17:53.759Z">
+<meta property="article:author" content="Kate Cheng">
+<meta property="article:tag" content="security">
+<meta property="article:tag" content="infra">
+<meta property="article:tag" content="stress-test">
+<meta property="article:tag" content="deploy">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://kk034kk034.github.io/2026/08/10/Hello-My-Enterprise-Cutover/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://kk034kk034.github.io/2026/08/10/Hello-My-Enterprise-Cutover/","path":"2026/08/10/Hello-My-Enterprise-Cutover/","title":"Hello, My Enterprise Cutover"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Hello, My Enterprise Cutover | Kate's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Kate's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">subtitle</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>關於</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%81%E6%A5%AD%E7%B4%9A%E7%B3%BB%E7%B5%B1%E4%B8%8A%E7%B7%9A%EF%BC%9A%E5%BE%9E-Infra-%E5%88%B0%E5%A3%93%E5%8A%9B%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%AF%A6%E6%88%B0%E7%AD%86%E8%A8%98"><span class="nav-number">1.</span> <span class="nav-text">企業級系統上線：從 Infra 到壓力測試的實戰筆記</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%84%A1%E7%97%9B%E4%B8%8A%E7%B7%9A%E4%B9%8B%E6%89%80%E4%BB%A5%E9%9B%A3%EF%BC%8C%E6%98%AF%E5%9B%A0%E7%82%BA%E5%B9%B3%E5%8F%B0%E6%9C%AC%E4%BE%86%E5%B0%B1%E4%B8%8D%E5%96%AE%E7%B4%94"><span class="nav-number">1.1.</span> <span class="nav-text">無痛上線之所以難，是因為平台本來就不單純</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%B8%BB%E6%A9%9F%E7%B6%B2%E8%B7%AF%E6%9E%B6%E6%A7%8B%EF%BC%9A%E5%85%88%E6%8A%8A%E6%9C%8D%E5%8B%99%E5%88%87%E4%B9%BE%E6%B7%A8"><span class="nav-number">1.2.</span> <span class="nav-text">一、主機網路架構：先把服務切乾淨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%82%99%E6%8F%B4%EF%BC%9A%E5%B7%B2%E7%B6%93%E5%81%9A%E5%88%B0%E7%9A%84%EF%BC%8C%E8%88%87%E9%82%84%E8%83%BD%E5%8A%A0%E5%BC%B7%E7%9A%84"><span class="nav-number">1.3.</span> <span class="nav-text">二、備援：已經做到的，與還能加強的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%B3%87%E5%AE%89%EF%BC%9A%E8%A6%81%E8%83%BD%E8%AC%9B%E5%BE%97%E5%87%BA%E3%80%8C%E5%81%9A%E4%BA%86%E4%BB%80%E9%BA%BC%E3%80%8D"><span class="nav-number">1.4.</span> <span class="nav-text">三、資安：要能講得出「做了什麼」</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%B8%8A%E7%B7%9A%E8%A6%8F%E5%8A%83%EF%BC%9A%E7%9B%AE%E6%A8%99%E6%98%AF%E3%80%8C%E7%84%A1%E7%97%9B%E8%BD%89%E7%A7%BB%E3%80%8D"><span class="nav-number">1.5.</span> <span class="nav-text">四、上線規劃：目標是「無痛轉移」</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%A3%93%E5%8A%9B%E6%B8%AC%E8%A9%A6%EF%BC%9A%E8%A6%8F%E6%A0%BC%E6%95%B8%E5%AD%97%E8%A6%81%E8%AE%8A%E6%88%90%E5%8F%AF%E9%87%8D%E7%8F%BE%E7%9A%84%E8%AD%89%E6%93%9A"><span class="nav-number">1.6.</span> <span class="nav-text">五、壓力測試：規格數字要變成可重現的證據</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%90%8C%E6%99%82%E4%B8%8A%E7%B7%9A%E4%BA%BA%E6%95%B8-%E2%89%A0-%E7%9C%9F%E5%AF%A6%E7%97%9B%E9%BB%9E"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 同時上線人數 ≠ 真實痛點</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%B3%87%E6%96%99%E9%87%8F%E5%A0%B4%E6%99%AF%E8%A6%81%E6%AF%94%E3%80%8C%E8%99%9B%E6%93%AC%E4%BD%BF%E7%94%A8%E8%80%85%E6%95%B8%E3%80%8D%E6%9B%B4%E8%B2%BC%E7%8F%BE%E5%A0%B4"><span class="nav-number">1.6.2.</span> <span class="nav-text">2. 資料量場景要比「虛擬使用者數」更貼現場</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A0%B1%E5%91%8A%E8%A6%81%E8%AA%A0%E5%AF%A6%E6%A8%99%E8%A8%BB%E9%99%90%E5%88%B6"><span class="nav-number">1.6.3.</span> <span class="nav-text">3. 報告要誠實標註限制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%B8%B6%E8%B5%B0%E7%9A%84%E5%B7%A5%E7%A8%8B%E7%B5%90%E8%AB%96"><span class="nav-number">1.7.</span> <span class="nav-text">六、帶走的工程結論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.8.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kate Cheng"
+      src="/images/GGC02414-1.jpg">
+  <p class="site-author-name" itemprop="name">Kate Cheng</p>
+  <div class="site-description" itemprop="description">Work Lift Balance</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/kk034kk034" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;kk034kk034" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/kate-cheng-a8b94a189/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;kate-cheng-a8b94a189&#x2F;" rel="noopener me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://kk034kk034.github.io/2026/08/10/Hello-My-Enterprise-Cutover/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/GGC02414-1.jpg">
+      <meta itemprop="name" content="Kate Cheng">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kate's Blog">
+      <meta itemprop="description" content="Work Lift Balance">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Hello, My Enterprise Cutover | Kate's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hello, My Enterprise Cutover
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+      
+
+      <time title="創建時間：2026-08-10 11:30:00 / 修改時間：12:17:53" itemprop="dateCreated datePublished" datetime="2026-08-10T11:30:00+08:00">2026-08-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="閱讀次數" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">閱讀次數：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="企業級系統上線：從-Infra-到壓力測試的實戰筆記"><a href="#企業級系統上線：從-Infra-到壓力測試的實戰筆記" class="headerlink" title="企業級系統上線：從 Infra 到壓力測試的實戰筆記"></a>企業級系統上線：從 Infra 到壓力測試的實戰筆記</h1><p>大型專案最難的，往往不是把功能做出來，而是把<strong>已經在跑的舊系統</strong>，在客戶要求不中斷服務的前提下，換成新系統。</p>
+<p>我平常寫的是應用，不是專職 Infra。只是做事偏一條龍，待過的又多是系統整合型團隊，主機、備援、資安、壓測、上線移轉自然都會碰到。這篇把那一段經驗收成一份筆記。</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="無痛上線之所以難，是因為平台本來就不單純"><a href="#無痛上線之所以難，是因為平台本來就不單純" class="headerlink" title="無痛上線之所以難，是因為平台本來就不單純"></a>無痛上線之所以難，是因為平台本來就不單純</h2><p>這類管理平台通常同時要扛：</p>
+<ul>
+<li><strong>資料規模</strong>：資產／紀錄可到十萬筆等級；匯出、地圖或清單分析都是大資料量操作</li>
+<li><strong>業務鏈</strong>：對外入口、管理後台、預警、工單／派工、現場 APP</li>
+<li><strong>設備鏈</strong>：大量邊緣裝置的上線／失聯、排程控制、協定介接</li>
+<li><strong>驗收門檻</strong>：同時上線人數、回應時間、連線數承載、資安檢測，常寫進規格書</li>
+</ul>
+<p>所以系統不只是「前後端分離」，而是 <strong>管理平台 + 資料流 + 地端機房 + 上線移轉</strong> 一起設計。</p>
+<hr>
+<h2 id="一、主機網路架構：先把服務切乾淨"><a href="#一、主機網路架構：先把服務切乾淨" class="headerlink" title="一、主機網路架構：先把服務切乾淨"></a>一、主機網路架構：先把服務切乾淨</h2><p>新系統規劃時，我習慣先把角色拆開，再決定實體機與 VM 怎麼擺：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">對外入口（NAT / Firewall）</span><br><span class="line">        │</span><br><span class="line">   Load Balancer (VIP)</span><br><span class="line">   ┌────┴────┐</span><br><span class="line">   │         │</span><br><span class="line"> 前端 UI    API / 設備介接</span><br><span class="line">   │         │</span><br><span class="line">   └────┬────┘</span><br><span class="line">     DB Cluster</span><br><span class="line">   （主備 / 投票節點）</span><br></pre></td></tr></table></figure>
+
+<p>實務上常見「兩台實體伺服器、各自多台 VM」的第一階段測試架構，例如：</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>內容</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前端 UI</td>
+<td>Web 管理介面 &#x2F; 對外服務</td>
+<td>跨兩台實體機互備</td>
+</tr>
+<tr>
+<td>API &#x2F; 設備介接</td>
+<td>業務 API、協定閘道、投票節點</td>
+<td>與 UI 分開，避免互相拖垮</td>
+</tr>
+<tr>
+<td>DB 備援</td>
+<td>關聯式／文件型 DB cluster</td>
+<td>外接儲存、獨立 VIP</td>
+</tr>
+</tbody></table>
+<p>重點不是機型型號，而是這三件事：</p>
+<ol>
+<li><strong>UI 與 API 分離</strong>：查詢與畫面吃前端；設備與批次作業吃 API</li>
+<li><strong>VIP + Server Load Balance</strong>：單機掛了，流量還能打到另一邊</li>
+<li><strong>測試／正式分階段</strong>：先用測試環境驗證切換流程，再指向正式主機，並保留獨立測試網域</li>
+</ol>
+<p>這跟我在《Respect the Flow》寫的一樣：環境角色一旦混掉，後面的壓力測試與上線驗證都會失真。</p>
+<hr>
+<h2 id="二、備援：已經做到的，與還能加強的"><a href="#二、備援：已經做到的，與還能加強的" class="headerlink" title="二、備援：已經做到的，與還能加強的"></a>二、備援：已經做到的，與還能加強的</h2><p>地端機房常見的「已落地」能力通常包含：</p>
+<ul>
+<li>WAN Load Balance</li>
+<li>Server Load Balance</li>
+<li>Boot Disk RAID1</li>
+<li>External Storage RAID6（NAS &#x2F; SAN）</li>
+</ul>
+<p>若要再往上，規劃時我會討論：</p>
+<ul>
+<li>遠端再備一套虛擬化管理（例如第二套 vCenter）</li>
+<li>同規格實體機 + 外接儲存作為異地硬體備援</li>
+<li><strong>雲端暖備</strong>：平時維持可啟動的最小架構（有固定成本、少傳輸成本）；地端災變時再把流量切過去（此時才產生 IO 成本）</li>
+</ul>
+<p>備援規劃的本質不是買兩倍機器，而是先回答：</p>
+<blockquote>
+<p>壞的是單機、機櫃、機房，還是整區網路？每一層你要多久恢復、資料能丟多少？</p>
+</blockquote>
+<hr>
+<h2 id="三、資安：要能講得出「做了什麼」"><a href="#三、資安：要能講得出「做了什麼」" class="headerlink" title="三、資安：要能講得出「做了什麼」"></a>三、資安：要能講得出「做了什麼」</h2><p>資安不能只寫「有防火牆」。企業級交付至少要對得上這些執行項：</p>
+<p><strong>已常見落地</strong></p>
+<ul>
+<li>Firewall Policy</li>
+<li>帳戶／權限管理</li>
+<li>網路分段（管理網 &#x2F; 服務網分離）</li>
+<li>網路監控與定期更新</li>
+</ul>
+<p><strong>驗收與強化常被點名的缺口</strong></p>
+<ul>
+<li>對外服務是否全面 HTTPS（不要還停在 http）</li>
+<li>敏感資料是否有金鑰加密</li>
+<li>原始碼安全：SQL Injection、XSS、OWASP 常見弱點檢測</li>
+<li>上線後可再安排第三方資安健診</li>
+</ul>
+<p>規格書通常還會要求：密碼強度與週期、登入失敗處理、適當 log 供稽核、禁止未授權軟體與後門。對開發者來說，這不是「加分項」，而是交付清單的一部分——跟我寫 API Validation 的立場一致：對外邊界必須由後端自己守住。</p>
+<hr>
+<h2 id="四、上線規劃：目標是「無痛轉移」"><a href="#四、上線規劃：目標是「無痛轉移」" class="headerlink" title="四、上線規劃：目標是「無痛轉移」"></a>四、上線規劃：目標是「無痛轉移」</h2><p>新舊系統切換的大方向通常長這樣：</p>
+<ol>
+<li><strong>舊系統資料盤點</strong>（格式、帳號、網域、IP、功能與規格差異）</li>
+<li><strong>匯入匯出格式對齊</strong>，必要時做資料瘦身</li>
+<li><strong>平行運作</strong>：新舊同步一段過渡期（常見以數個月計）</li>
+<li><strong>Domain &#x2F; 機房交換</strong>：舊系統先移出騰出機房，新系統進駐</li>
+<li><strong>舊系統保留還原路徑</strong>：出問題先能退回，再談優化</li>
+</ol>
+<p>流程可以濃縮成一句話：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">舊系統外移 → 地端切換新系統 → 舊系統收斂為備援 → 確認穩定後下線</span><br></pre></td></tr></table></figure>
+
+<p>上線前驗證 checklist 我會特別盯：</p>
+<ul>
+<li>資料移轉前後筆數比對 + 實際畫面讀取既有資料</li>
+<li>系統黑箱測試</li>
+<li>硬體資源觀測（RAM 高峰、磁碟、連線數）</li>
+<li>回歸測試演練</li>
+<li>壓力測試：先假資料，再真資料</li>
+<li>APP／現場流程驗證</li>
+</ul>
+<p>客戶端協作也要提前列進 Todo：正式網域申請、內部 IP 策略、帳號申請流程、哪些項目要對方 IT 協助。軟體團隊若只顧開發，不管「誰申請 Domain」，上線日一定卡關。</p>
+<hr>
+<h2 id="五、壓力測試：規格數字要變成可重現的證據"><a href="#五、壓力測試：規格數字要變成可重現的證據" class="headerlink" title="五、壓力測試：規格數字要變成可重現的證據"></a>五、壓力測試：規格數字要變成可重現的證據</h2><p>壓力測試不是「感覺很快」，而是對齊規格書門檻，例如：</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>門檻（示意）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前台同時上線</td>
+<td>≥ 200 人</td>
+</tr>
+<tr>
+<td>後台同時上線</td>
+<td>≥ 50 人</td>
+</tr>
+<tr>
+<td>回應時間</td>
+<td>多數操作 3 秒內；更嚴格條款可能要求 90% ≤ 3s、最長 ≤ 6s</td>
+</tr>
+<tr>
+<td>大量連線</td>
+<td>同時約 1000 連線，多數存取於 5 秒內回應</td>
+</tr>
+</tbody></table>
+<p>我們用 <strong>k6</strong> 產出可交付的報告欄位：測試日期、成功率、錯誤數、<code>http_req_duration</code>、<code>http_req_waiting</code>（p90）等。實測經驗裡，規格門檻往往「過得了」；真正難的是業務真實場景：</p>
+<h3 id="1-同時上線人數-≠-真實痛點"><a href="#1-同時上線人數-≠-真實痛點" class="headerlink" title="1. 同時上線人數 ≠ 真實痛點"></a>1. 同時上線人數 ≠ 真實痛點</h3><p>200 &#x2F; 50 人同時在線，很多 API 的 p90 可能只有數十毫秒。<br>但 <strong>大範圍地圖查詢、數萬筆設備清單、十萬筆級匯出</strong>，才會把系統打進瓶頸。</p>
+<h3 id="2-資料量場景要比「虛擬使用者數」更貼現場"><a href="#2-資料量場景要比「虛擬使用者數」更貼現場" class="headerlink" title="2. 資料量場景要比「虛擬使用者數」更貼現場"></a>2. 資料量場景要比「虛擬使用者數」更貼現場</h3><p>實務會補測：</p>
+<ul>
+<li>大量裝置異常／失聯事件：五萬、八萬、十六萬筆等級，看系統會不會垮、告警能否正確產生</li>
+<li>工單／清單同時查詢</li>
+<li>匯出改成<strong>排程非同步</strong>（先回「已加入排程」，避免同步下載把 Web 卡死）</li>
+<li>批次遠端控制：多群組、多組排程同時下發</li>
+</ul>
+<h3 id="3-報告要誠實標註限制"><a href="#3-報告要誠實標註限制" class="headerlink" title="3. 報告要誠實標註限制"></a>3. 報告要誠實標註限制</h3><p>例如「無法模擬不同來源 IP，但同時間 N 人併發比跨地點更嚴」；或「資料更新週期無法單靠壓測完全證明，只能量測回應時間」。驗收現場比較吃這類可追溯說明，而不是只貼一張全綠的表。</p>
+<hr>
+<h2 id="六、帶走的工程結論"><a href="#六、帶走的工程結論" class="headerlink" title="六、帶走的工程結論"></a>六、帶走的工程結論</h2><ol>
+<li><strong>架構：先把服務切乾淨</strong>：UI &#x2F; API &#x2F; DB &#x2F; 設備介接分開，再談 VIP 與測試／正式分階段。</li>
+<li><strong>備援：先盤點已做到與可加強</strong>：Load Balance、RAID 做到哪，下一層異地或雲端暖備還缺什麼。</li>
+<li><strong>資安：要寫成現況／缺口</strong>：已做到什麼、可加強什麼，比空泛原則有用。</li>
+<li><strong>上線：是專案，不是 deploy 指令</strong>：資料、網域、帳號、機房、還原路徑都要有 owner。</li>
+<li><strong>壓測：要分兩層</strong>：規格門檻（過門）+ 業務尖峰（過生活）。</li>
+</ol>
+<hr>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>回頭看，客戶要的其實很單純：服務不要斷。</p>
+<p>要做到這句話，不能等到要上線那天，才趕著補報告。架構怎麼切、壞了怎麼備、資安交什麼、壓測怎麼驗、出問題怎麼退——這些最好在過渡期就先談完、先跑過。</p>
+<p>功能當然還是要寫；只是新舊系統對切的那天，決定成敗的往往不只是功能。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>作者： </strong>Kate Cheng
+  </li>
+  <li class="post-copyright-link">
+      <strong>文章連結：</strong>
+      <a href="https://kk034kk034.github.io/2026/08/10/Hello-My-Enterprise-Cutover/" title="Hello, My Enterprise Cutover">https://kk034kk034.github.io/2026/08/10/Hello-My-Enterprise-Cutover/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/security/" rel="tag"># security</a>
+              <a href="/tags/infra/" rel="tag"># infra</a>
+              <a href="/tags/stress-test/" rel="tag"># stress-test</a>
+              <a href="/tags/deploy/" rel="tag"># deploy</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/08/09/Hello-My-Mobile-App/" rel="prev" title="Hello, My Mobile App">
+                  <i class="fa fa-angle-left"></i> Hello, My Mobile App
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Kate Cheng</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="訪客總數">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="總瀏覽次數">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
