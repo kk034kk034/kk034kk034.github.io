@@ -13,6 +13,8 @@ tags:
 - Easy Use
 - Flexibility
 
+<!-- more -->
+
 # Quick Start
 ## Github Page
 1. 先有一個Github帳號

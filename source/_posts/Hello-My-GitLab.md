@@ -12,6 +12,8 @@ tags:
 - Deploy on Raspberry Pi is Easy and Cost Down
 - gitlab.rb is Flexibility
 
+<!-- more -->
+
 # Quick Start
 安裝方式分成兩種，一種是直接安裝，另一種是docker版(建議)。
 我是樹莓派4B，所以是安裝arm64v8的版本。

@@ -13,6 +13,7 @@ tags:
 
 > 這篇文章將帶你一步步用 Gitea Actions 打造自己的自動部署流程，從安裝 Runner 到實作 workflow，不只是跑測試，還能部署 Docker 應用。
 
+<!-- more -->
 
 ## 為什麼選 Gitea Actions？🤔
 

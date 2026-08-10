@@ -12,6 +12,8 @@ tags:
 但開發環境還是使用linux比較順手的情況下
 以下是我常用的環境與工具
 
+<!-- more -->
+
 # Quick Start
 STEP 1:
 搜尋: 開啟或關閉 Windows 功能

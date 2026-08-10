@@ -14,6 +14,7 @@ tags:
 
 誠心推薦的教學影片：[十分钟学会正确的 GitHub 工作流](https://www.youtube.com/watch?v=uj8hjLyEBmU)
 
+<!-- more -->
 
 ## 前言
 

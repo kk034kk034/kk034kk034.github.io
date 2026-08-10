@@ -20,6 +20,8 @@ tags:
 不靠複雜 infra，全程用 Docker Compose 一鍵啟動。
 📦 完整 docker-compose.yml 放這裡 👉 [GitHub Repo](https://github.com/kk034kk034/management-system/blob/main/dev-compose.yml)
 
+<!-- more -->
+
 # Quick Start
 
 ## 架構概覽：Fastify + ELK Flow
