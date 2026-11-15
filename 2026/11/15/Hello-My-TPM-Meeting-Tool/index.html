@@ -27,14 +27,19 @@
 <meta property="og:site_name" content="Kate&#39;s Blog">
 <meta property="og:description" content="TPM 開工第一個工具：Cloakly寫計劃、拆 WBS、整理風險表——這些現在都能靠 AI 加速。真正卡住我的，是會議：人的時間被鎖在會議室裡，而且幾乎整天都在開不同的會。 計劃可以晚上補；會議當下錯過的細節、決議、待辦，事後很難靠回憶救回來。 所以我做了 Cloakly：不是又一個錄音轉文字，而是以專案為單位，把會議紀錄、行動項、即時問答、相關檔案輔助收在同一個地方。">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://kk034kk034.github.io/2026/11/15/Hello-My-TPM-Meeting-Tool/05-projects.png">
+<meta property="og:image" content="https://kk034kk034.github.io/2026/11/15/Hello-My-TPM-Meeting-Tool/06-home.png">
+<meta property="og:image" content="https://kk034kk034.github.io/2026/11/15/Hello-My-TPM-Meeting-Tool/13-session.png">
+<meta property="og:image" content="https://kk034kk034.github.io/2026/11/15/Hello-My-TPM-Meeting-Tool/08-meeting.png">
 <meta property="article:published_time" content="2026-11-15T07:00:00.000Z">
-<meta property="article:modified_time" content="2026-11-15T07:16:15.868Z">
+<meta property="article:modified_time" content="2026-11-15T09:48:07.257Z">
 <meta property="article:author" content="Kate Cheng">
 <meta property="article:tag" content="PM">
 <meta property="article:tag" content="TPM">
 <meta property="article:tag" content="meeting">
 <meta property="article:tag" content="cloakly">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kk034kk034.github.io/2026/11/15/Hello-My-TPM-Meeting-Tool/05-projects.png">
 
 
 <link rel="canonical" href="https://kk034kk034.github.io/2026/11/15/Hello-My-TPM-Meeting-Tool/">
@@ -117,7 +122,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TPM-%E9%96%8B%E5%B7%A5%E7%AC%AC%E4%B8%80%E5%80%8B%E5%B7%A5%E5%85%B7%EF%BC%9ACloakly"><span class="nav-number">1.</span> <span class="nav-text">TPM 開工第一個工具：Cloakly</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E6%98%AF%E3%80%8C%E6%9C%83%E8%AD%B0%E3%80%8D%E6%9C%80%E7%97%9B"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼是「會議」最痛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%80%E4%BB%A5-Cloakly-%E5%81%9A%E6%88%90%E3%80%8C%E5%B0%88%E6%A1%88%E3%80%8D%E8%80%8C%E4%B8%8D%E6%98%AF%E3%80%8C%E5%96%AE%E5%A0%B4%E6%9C%83%E8%AD%B0%E3%80%8D"><span class="nav-number">1.2.</span> <span class="nav-text">所以 Cloakly 做成「專案」而不是「單場會議」</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%83%E8%AD%B0%E4%B8%AD%EF%BC%9A%E9%80%90%E5%AD%97%E7%A8%BF-%E7%AD%86%E8%A8%98-AI-%E8%BC%94%E5%8A%A9%E5%9B%9E%E7%AD%94"><span class="nav-number">1.3.</span> <span class="nav-text">會議中：逐字稿 + 筆記 + AI 輔助回答</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%83%E8%AD%B0%E5%BE%8C%EF%BC%9A%E6%91%98%E8%A6%81%E3%80%81%E6%B1%BA%E8%AD%B0%E3%80%81%E8%A1%8C%E5%8B%95%E9%A0%85"><span class="nav-number">1.4.</span> <span class="nav-text">會議後：摘要、決議、行動項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BC%89%E8%88%87%E5%8E%9F%E5%A7%8B%E7%A2%BC"><span class="nav-number">1.5.</span> <span class="nav-text">下載與原始碼</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TPM-%E9%96%8B%E5%B7%A5%E7%AC%AC%E4%B8%80%E5%80%8B%E5%B7%A5%E5%85%B7%EF%BC%9ACloakly"><span class="nav-number">1.</span> <span class="nav-text">TPM 開工第一個工具：Cloakly</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E6%98%AF%E3%80%8C%E6%9C%83%E8%AD%B0%E3%80%8D%E6%9C%80%E7%97%9B"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼是「會議」最痛</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%80%E4%BB%A5-Cloakly-%E5%81%9A%E6%88%90%E3%80%8C%E5%B0%88%E6%A1%88%E3%80%8D%E8%80%8C%E4%B8%8D%E6%98%AF%E3%80%8C%E5%96%AE%E5%A0%B4%E6%9C%83%E8%AD%B0%E3%80%8D"><span class="nav-number">1.2.</span> <span class="nav-text">所以 Cloakly 做成「專案」而不是「單場會議」</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%88%B0%E6%9C%83%E5%BE%8C%EF%BC%9A%E9%80%90%E5%AD%97%E7%A8%BF%E3%80%81%E8%BC%94%E5%8A%A9%E5%9B%9E%E7%AD%94%E3%80%81%E8%A1%8C%E5%8B%95%E9%A0%85"><span class="nav-number">1.3.</span> <span class="nav-text">會議中到會後：逐字稿、輔助回答、行動項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BC%89%E8%88%87%E5%8E%9F%E5%A7%8B%E7%A2%BC"><span class="nav-number">1.4.</span> <span class="nav-text">下載與原始碼</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -208,7 +213,7 @@
       <span class="post-meta-item-text">發表於</span>
       
 
-      <time title="創建時間：2026-11-15 15:00:00 / 修改時間：15:16:15" itemprop="dateCreated datePublished" datetime="2026-11-15T15:00:00+08:00">2026-11-15</time>
+      <time title="創建時間：2026-11-15 15:00:00 / 修改時間：17:48:07" itemprop="dateCreated datePublished" datetime="2026-11-15T15:00:00+08:00">2026-11-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -252,24 +257,29 @@
 <p>AI 可以幫我寫文件；<strong>不能替我坐在會議裡</strong>。所以工具要幫的是：紀錄、產生行動、即時問答、快速切換專案脈絡。</p>
 <hr>
 <h2 id="所以-Cloakly-做成「專案」而不是「單場會議」"><a href="#所以-Cloakly-做成「專案」而不是「單場會議」" class="headerlink" title="所以 Cloakly 做成「專案」而不是「單場會議」"></a>所以 Cloakly 做成「專案」而不是「單場會議」</h2><p>每場會議都掛在某個專案底下。專案裡有文件、歷次逐字稿、筆記、會議紀錄——之後才能做有依據的問答（RAG），而不是每場會議從零開始。</p>
-<p>開會前選定專案資料夾，規格、時程、Issue、簡報會進知識庫；開會時問「現況怎樣」「上次承諾什麼」，答案可以帶回來源片段，而不是憑印象。</p>
+<p>開會前選定專案資料夾，規格、時程、Issue、簡報會進知識庫；專案首頁就能看狀態、會議、問答，並直接開始會議。問「現況怎樣」「上次承諾什麼」，答案可以帶回來源片段，而不是憑印象。</p>
+<div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-start; margin:1em 0;">
+  <div style="flex:1 1 220px; max-width:280px;">
+    <img src="/2026/11/15/Hello-My-TPM-Meeting-Tool/05-projects.png" class="" title="Cloakly：專案列表與跨專案看板">
+  </div>
+  <div style="flex:1 1 220px; max-width:280px;">
+    <img src="/2026/11/15/Hello-My-TPM-Meeting-Tool/06-home.png" class="" title="Cloakly：專案首頁（狀態、會議、問答、開始會議）">
+  </div>
+</div>
+
 <hr>
-<h2 id="會議中：逐字稿-筆記-AI-輔助回答"><a href="#會議中：逐字稿-筆記-AI-輔助回答" class="headerlink" title="會議中：逐字稿 + 筆記 + AI 輔助回答"></a>會議中：逐字稿 + 筆記 + AI 輔助回答</h2><p>現場我需要同時做三件事：聽、記、偶爾被點名回答。</p>
-<p>Cloakly 在會議進行中可以：</p>
-<ol>
-<li><strong>串流逐字稿</strong>——邊開邊看，不用事後整場重聽</li>
-<li><strong>現場筆記</strong>——自己標重點、決議、待確認</li>
-<li><strong>AI 輔助回答</strong>——被問到時，依專案文件 + 當下逐字稿給提示，讓我快速切回正確脈絡</li>
-</ol>
-<p>這也是為什麼我堅持「專案形式」：沒有專案脈絡，即時回答就只是通用聊天；有了檔案與歷史會議，才叫<strong>專案會議助手</strong>。</p>
-<hr>
-<h2 id="會議後：摘要、決議、行動項"><a href="#會議後：摘要、決議、行動項" class="headerlink" title="會議後：摘要、決議、行動項"></a>會議後：摘要、決議、行動項</h2><p>會開完最重要的不是「有一份很長的逐字稿」，而是：</p>
-<ul>
-<li>這場到底定了什麼</li>
-<li>誰要做什麼、做到何時</li>
-<li>哪些還是 open question</li>
-</ul>
-<p>結束後 Cloakly 會依逐字稿與筆記整理摘要、決議與待辦，讓會議產出能接回專案，而不是散落在聊天室。</p>
+<h2 id="會議中到會後：逐字稿、輔助回答、行動項"><a href="#會議中到會後：逐字稿、輔助回答、行動項" class="headerlink" title="會議中到會後：逐字稿、輔助回答、行動項"></a>會議中到會後：逐字稿、輔助回答、行動項</h2><p>現場我需要同時做三件事：聽、記、偶爾被點名回答。Cloakly 在會議進行中可以串流逐字稿、寫現場筆記，被問到時依專案文件 + 當下逐字稿給建議回覆。</p>
+<p>會開完更重要的不是長逐字稿，而是：這場定了什麼、誰要做什麼、還有哪些 open question。結束後會整理摘要、決議與待辦，讓產出接回專案，而不是散落在聊天室。</p>
+<p>沒有專案脈絡，即時回答就只是通用聊天；有了檔案與歷史會議，才叫<strong>專案會議助手</strong>。</p>
+<div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-start; margin:1em 0;">
+  <div style="flex:1 1 220px; max-width:280px;">
+    <img src="/2026/11/15/Hello-My-TPM-Meeting-Tool/13-session.png" class="" title="Cloakly：會議中逐字稿與建議回覆">
+  </div>
+  <div style="flex:1 1 220px; max-width:280px;">
+    <img src="/2026/11/15/Hello-My-TPM-Meeting-Tool/08-meeting.png" class="" title="Cloakly：會後會議紀錄（決定與待辦）">
+  </div>
+</div>
+
 <hr>
 <h2 id="下載與原始碼"><a href="#下載與原始碼" class="headerlink" title="下載與原始碼"></a>下載與原始碼</h2><table>
 <thead>
